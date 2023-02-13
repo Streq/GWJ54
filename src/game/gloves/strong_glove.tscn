@@ -4,6 +4,20 @@
 
 [node name="strong_glove" instance=ExtResource( 1 )]
 
+[node name="Sprite" parent="." index="0"]
+__meta__ = {
+"_aseprite_wizard_config_": {
+"layer": "",
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"op_exp": false,
+"player": "AnimationPlayer",
+"source": "res://assets/aseprite/globe.aseprite"
+}
+}
+
 [node name="hitbox" parent="." index="2"]
 monitorable = false
 damage = 40.0

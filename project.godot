@@ -123,6 +123,11 @@ _global_script_classes=[ {
 "class": "TilemapUtils",
 "language": "GDScript",
 "path": "res://src/util/tilemap/tilemap_utils.gd"
+}, {
+"base": "Node2D",
+"class": "Weapon",
+"language": "GDScript",
+"path": "res://src/game/entity/fighter/hand/weapon/weapon.gd"
 } ]
 _global_script_class_icons={
 "Aiming": "",
@@ -147,7 +152,8 @@ _global_script_class_icons={
 "State": "",
 "StateMachine": "",
 "StringUtils": "",
-"TilemapUtils": ""
+"TilemapUtils": "",
+"Weapon": ""
 }
 
 [application]
@@ -163,8 +169,8 @@ ScreenRecorder="*res://src/util/screen_recording/screen_recorder.tscn"
 
 [display]
 
-window/size/width=1280
-window/size/height=720
+window/size/width=640
+window/size/height=360
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 

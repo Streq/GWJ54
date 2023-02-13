@@ -38,7 +38,7 @@ format = 1
 
 [node name="fighter" parent="." instance=ExtResource( 6 )]
 process_priority = 1
-position = Vector2( 4, 36 )
+position = Vector2( 313, 180 )
 
 [node name="player_controller" type="Node" parent="fighter"]
 script = ExtResource( 5 )

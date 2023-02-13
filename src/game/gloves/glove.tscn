@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://src/game/gloves/glove.png" type="Texture" id=1]
+[ext_resource path="res://src/game/gloves/globe.png" type="Texture" id=1]
 [ext_resource path="res://src/game/hitbox.gd" type="Script" id=2]
 [ext_resource path="res://src/game/gloves/glove.gd" type="Script" id=3]
 

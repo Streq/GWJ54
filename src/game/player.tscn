@@ -47,18 +47,13 @@ trigger_action = "B"
 [node name="left" type="Node2D" parent="pivot"]
 position = Vector2( 12, -14 )
 rotation = 0.174533
+scale = Vector2( 1, -1 )
 script = ExtResource( 5 )
 
 [node name="glove" parent="pivot/left" instance=ExtResource( 3 )]
 reach = 50
 start_pull_back = 5
-start_lag_time = 0.05
-extend_time = 0.1
 extend_scale = 1.25
-retrieve_lag_time = 0.05
-retrieve_time = 0.2
-cooldown = 0.05
-left_hand = true
 
 [node name="health" parent="." instance=ExtResource( 7 )]
 unique_name_in_owner = true

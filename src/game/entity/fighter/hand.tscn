@@ -1,0 +1,29 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://src/game/entity/fighter/hand.gd" type="Script" id=1]
+[ext_resource path="res://assets/texture/bare_hand.png" type="Texture" id=2]
+[ext_resource path="res://src/util/state_machine/state_machine.tscn" type="PackedScene" id=3]
+[ext_resource path="res://src/game/entity/fighter/hand/state/idle.gd" type="Script" id=4]
+[ext_resource path="res://src/game/entity/fighter/hand/state/casting.gd" type="Script" id=5]
+[ext_resource path="res://src/game/entity/fighter/hand/state/disabled.gd" type="Script" id=7]
+
+[node name="right" type="Node2D" groups=["hand"]]
+position = Vector2( 12, 14 )
+rotation = -0.174533
+script = ExtResource( 1 )
+
+[node name="bare_sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="state_machine" parent="." instance=ExtResource( 3 )]
+unique_name_in_owner = true
+start_state = "idle"
+
+[node name="idle" type="Node" parent="state_machine"]
+script = ExtResource( 4 )
+
+[node name="casting" type="Node" parent="state_machine"]
+script = ExtResource( 5 )
+
+[node name="disabled" type="Node" parent="state_machine"]
+script = ExtResource( 7 )

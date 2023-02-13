@@ -1,5 +1,4 @@
-extends Node2D
-tool
+extends Weapon
 
 signal punching_motion_started
 signal punching_motion_ended
@@ -14,21 +13,16 @@ export var extend_scale := 2.0
 export var retrieve_lag_time := 0.1
 export var retrieve_time := 0.25
 export var cooldown := 0.15
-export var left_hand := false setget set_left_hand
+var left_hand := false
 
 var team setget,get_team
 
 func get_team():
-	return pivot.owner.team
-
+	if is_instance_valid(wielder):
+		return wielder.team
+	return null
 onready var animation_player: AnimationPlayer = $AnimationPlayer
 
-func set_left_hand(val):
-	left_hand = val
-	if left_hand:
-		$Sprite.scale.y = -1
-	else:
-		$Sprite.scale.y = 1
 
 var busy = false
 var tween : SceneTreeTween = null
@@ -36,17 +30,20 @@ var start_position := Vector2()
 var start_rotation := 0.0
 var in_attack_motion = false
 
+var wielder = false
+
 onready var pivot = get_parent()
 
 func _physics_process(delta: float) -> void:
-	if !tween or !tween.is_valid():
+	if !tween or !tween.is_valid() and pivot.is_a_parent_of(self):
 		transform = Transform2D.IDENTITY
 
+func _cast():
+	punch()
+
+
 func punch():
-	if pivot.owner.punching or busy:
-		return
 	busy = true
-	pivot.owner.punching = true
 	
 	if tween:
 		tween.kill()
@@ -56,6 +53,7 @@ func punch():
 	
 	tween.tween_callback(animation_player,"play",["punch"])
 	
+	NodeUtils.reparent_keep_transform(self, pivot)
 	#lag
 #	tween.tween_property(self,"position",Vector2(-10,0),start_lag_time).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
 	tween.tween_property(self,"transform",Transform2D(0,Vector2(-start_pull_back,0)),start_lag_time).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
@@ -69,7 +67,7 @@ func punch():
 		tween.tween_interval(retrieve_lag_time)
 	tween.tween_callback(self,"retrieving")
 	tween.tween_method(self,"lerp_to_pivot_from_start_position",0.0,1.0,retrieve_time).set_trans(Tween.TRANS_LINEAR)
-	tween.parallel().tween_property(self,"scale",Vector2(1.0,1.0),retrieve_time)
+	tween.parallel().tween_property(self,"scale",pivot.scale,retrieve_time)
 	tween.parallel().tween_callback(self,"can_punch_again").set_delay(cooldown)
 	tween.tween_callback(animation_player,"play",["punch"])
 	tween.tween_callback(self,"punch_over")
@@ -77,13 +75,14 @@ func punch():
 func extended():
 	emit_signal("extended")
 	NodeUtils.reparent_keep_transform(self, pivot.owner.get_parent())
-	pivot.owner.punching = false
-	pivot.owner.locked_in = false
+#	pivot.owner.punching = false
+#	pivot.owner.locked_in = false
 	
+	unlock_aim()
 	emit_signal("punching_motion_ended")
-
+	
 func punch_motion_begin():
-	pivot.owner.locked_in = true
+	lock_aim()
 	emit_signal("punching_motion_started")
 
 func retrieving():
@@ -93,11 +92,14 @@ func retrieving():
 
 func can_punch_again():
 	busy = false
-	NodeUtils.reparent_keep_transform(self, pivot)
+	cast_over()
+	
 
 
 func punch_over():
 	can_punch_again()
+	
+	NodeUtils.reparent_keep_transform(self, pivot)
 	transform = Transform2D.IDENTITY
 	if tween:
 		tween.kill()
@@ -129,3 +131,10 @@ func lerp_to_pivot_from_start_position(weight):
 	prev_dist = dist
 	if global_position.distance_squared_to(pivot.global_position) < 5*5:
 		punch_over()
+
+func _init() -> void:
+	connect("tree_entered",self,"_on_tree_entered")
+
+func _on_tree_entered() -> void:
+	if get_parent() and get_parent().is_in_group("hand") and get_parent().weapon != self:
+		get_parent().add_weapon(self)

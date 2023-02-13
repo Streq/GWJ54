@@ -6,6 +6,8 @@ signal dead()
 
 export var damping := 0.0
 
+export var team := 0
+
 onready var input_state := $"%input_state"
 onready var animation_player := $"%animation_player"
 onready var state_machine := $"%state_machine"

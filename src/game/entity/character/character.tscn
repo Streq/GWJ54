@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://src/util/state_machine/state_machine.tscn" type="PackedScene" id=1]
-[ext_resource path="res://src/game/entity/character/input_state.gd" type="Script" id=3]
+[ext_resource path="res://src/game/entity/character/input_state.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/game/entity/character/character.gd" type="Script" id=4]
 
 [node name="character" type="KinematicBody2D"]
@@ -13,9 +13,7 @@ unique_name_in_owner = true
 [node name="animation_player" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
 
-[node name="input_state" type="Node" parent="."]
-unique_name_in_owner = true
-script = ExtResource( 3 )
+[node name="input_state" parent="." instance=ExtResource( 2 )]
 
 [node name="pivot" type="Node2D" parent="."]
 unique_name_in_owner = true
