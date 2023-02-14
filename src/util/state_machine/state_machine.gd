@@ -13,8 +13,10 @@ func initialize():
 		states[state.name] = state
 		state.connect("finish", self, "_change_state")
 		state.root = root
+		
 	current = states[start_state]
 	current.enter(null)
+	emit_signal("state_changed", current.name)
 
 func physics_update(delta: float):
 	current.physics_update(delta)

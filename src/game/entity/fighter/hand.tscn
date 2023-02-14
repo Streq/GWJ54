@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://src/game/entity/fighter/hand.gd" type="Script" id=1]
 [ext_resource path="res://assets/texture/bare_hand.png" type="Texture" id=2]
 [ext_resource path="res://src/util/state_machine/state_machine.tscn" type="PackedScene" id=3]
 [ext_resource path="res://src/game/entity/fighter/hand/state/idle.gd" type="Script" id=4]
 [ext_resource path="res://src/game/entity/fighter/hand/state/casting.gd" type="Script" id=5]
+[ext_resource path="res://src/HUD/mantain_rotation_scale.gd" type="Script" id=6]
 [ext_resource path="res://src/game/entity/fighter/hand/state/disabled.gd" type="Script" id=7]
 
 [node name="right" type="Node2D" groups=["hand"]]
@@ -27,3 +28,18 @@ script = ExtResource( 5 )
 
 [node name="disabled" type="Node" parent="state_machine"]
 script = ExtResource( 7 )
+
+[node name="fixed_pivot" type="Node2D" parent="."]
+scale = Vector2( 1, 1 )
+z_index = 1000
+script = ExtResource( 6 )
+
+[node name="state_display" type="Label" parent="fixed_pivot"]
+margin_top = -16.0
+margin_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+align = 1
+valign = 1
+
+[connection signal="state_changed" from="state_machine" to="fixed_pivot/state_display" method="set_text"]

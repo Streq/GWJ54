@@ -48,6 +48,7 @@ func punch():
 	if tween:
 		tween.kill()
 	tween = create_tween()
+	lock_limbs()
 	
 	tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
 	

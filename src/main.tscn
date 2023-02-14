@@ -9,9 +9,6 @@
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-current = true
-
 [node name="player" parent="." instance=ExtResource( 1 )]
 collision_layer = 2
 speed = 200.0
@@ -42,3 +39,6 @@ position = Vector2( 313, 180 )
 
 [node name="player_controller" type="Node" parent="fighter"]
 script = ExtResource( 5 )
+
+[node name="Camera2D" type="Camera2D" parent="fighter"]
+current = true
