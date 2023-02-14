@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://src/game/entity/character/character.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/HUD/bar.gd" type="Script" id=2]
@@ -9,7 +9,6 @@
 [ext_resource path="res://src/game/entity/fighter/hand.tscn" type="PackedScene" id=7]
 [ext_resource path="res://src/HUD/mantain_rotation_scale.gd" type="Script" id=8]
 [ext_resource path="res://assets/texture/bar_background.png" type="Texture" id=9]
-[ext_resource path="res://src/game/entity/fighter/state/idle.gd" type="Script" id=10]
 [ext_resource path="res://src/game/gloves/glove.tscn" type="PackedScene" id=12]
 [ext_resource path="res://src/game/entity/fighter/state/casting.gd" type="Script" id=13]
 [ext_resource path="res://src/game/entity/fighter/state/hurt.gd" type="Script" id=14]
@@ -30,22 +29,18 @@ resource_name = "idle"
 collision_layer = 2
 
 [node name="state_machine" parent="." index="0"]
-start_state = "idle"
+start_state = "casting"
 
-[node name="idle" type="Node" parent="state_machine" index="0"]
-script = ExtResource( 10 )
-animation = "idle"
-
-[node name="casting" type="Node" parent="state_machine" index="1"]
+[node name="casting" type="Node" parent="state_machine" index="0"]
 script = ExtResource( 13 )
 
-[node name="hurt" type="Node" parent="state_machine" index="2"]
+[node name="hurt" type="Node" parent="state_machine" index="1"]
 script = ExtResource( 14 )
 
-[node name="knocked" type="Node" parent="state_machine" index="3"]
+[node name="knocked" type="Node" parent="state_machine" index="2"]
 script = ExtResource( 15 )
 
-[node name="dead" type="Node" parent="state_machine" index="4"]
+[node name="dead" type="Node" parent="state_machine" index="3"]
 script = ExtResource( 16 )
 
 [node name="animation_player" parent="." index="1"]
@@ -70,14 +65,17 @@ unique_name_in_owner = true
 position = Vector2( 12, -14 )
 rotation = 0.174533
 scale = Vector2( 1, -1 )
+trigger_predicate = "is_pressed"
 
 [node name="glove" parent="pivot/limbs/left" index="2" instance=ExtResource( 12 )]
+reach = 50
 
 [node name="right" parent="pivot/limbs" index="1" instance=ExtResource( 7 )]
-scale = Vector2( 1, 1 )
 trigger_action = "B"
+trigger_predicate = "is_pressed"
 
 [node name="glove" parent="pivot/limbs/right" index="2" instance=ExtResource( 12 )]
+reach = 50
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="4"]
 shape = SubResource( 2 )
@@ -100,7 +98,6 @@ texture_progress = ExtResource( 6 )
 script = ExtResource( 2 )
 
 [node name="fixed_pivot" type="Node2D" parent="." index="7"]
-scale = Vector2( 1, 1 )
 z_index = 1000
 script = ExtResource( 8 )
 

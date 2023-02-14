@@ -25,22 +25,26 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	state_machine.physics_update(delta)
 	
+	
+func remove_weapon():
+	remove_child(weapon)
+	weapon.disconnect("cast",self,"_on_cast")
+	weapon.disconnect("cast_over",self,"_on_cast_over")
+	for signal_name in [
+		"lock_feet",
+		"unlock_feet",
+		"lock_limbs",
+		"unlock_limbs",
+		"lock_aim",
+		"unlock_aim"
+	]:
+		undo_forward_signal(weapon, signal_name)
+	
+	weapon.queue_free()
+	$bare_sprite.show()
 func add_weapon(new_weapon):
 	if is_instance_valid(weapon):
-		remove_child(weapon)
-		weapon.disconnect("cast",self,"_on_cast")
-		weapon.disconnect("cast_over",self,"_on_cast_over")
-		for signal_name in [
-			"lock_feet",
-			"unlock_feet",
-			"lock_limbs",
-			"unlock_limbs",
-			"lock_aim",
-			"unlock_aim"
-		]:
-			undo_forward_signal(weapon, signal_name)
-		
-		weapon.queue_free()
+		remove_weapon()
 	
 	weapon = new_weapon
 	NodeUtils.add_or_reparent(weapon, self)
@@ -59,6 +63,7 @@ func add_weapon(new_weapon):
 		forward_signal(weapon, signal_name)
 	
 	weapon.wielder = owner
+	$bare_sprite.hide()
 	
 
 func forward_signal(object, signal_name):
@@ -68,21 +73,18 @@ func undo_forward_signal(object, signal_name):
 	object.disconnect(signal_name,self,"emit_signal",[signal_name])
 
 func _on_cast():
-	state_machine._change_state("casting")
+	state_machine.current.cast()
 	emit_signal("cast")
 
 func _on_cast_over():
-	state_machine._change_state("idle")
+	state_machine.current.cast_over()
 	emit_signal("cast_over")
 
 func lock():
-	state_machine._change_state("disabled")
+	state_machine.current.lock()
 
 func unlock():
-	state_machine._change_state("idle")
-
-func disable():
-	state_machine._change_state("disabled")
+	state_machine.current.unlock()
 
 func trigger_weapon():
 	if is_instance_valid(weapon):

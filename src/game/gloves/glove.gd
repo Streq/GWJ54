@@ -89,16 +89,18 @@ func punch_motion_begin():
 func retrieving():
 	start_position = global_position
 	start_rotation = global_rotation
+	unlock_limbs()
 	
 
 func can_punch_again():
+	if !busy:
+		return
 	busy = false
 	cast_over()
 	
 
 
 func punch_over():
-	can_punch_again()
 	
 	NodeUtils.reparent_keep_transform(self, pivot)
 	transform = Transform2D.IDENTITY
@@ -130,8 +132,9 @@ func lerp_to_pivot_from_start_position(weight):
 	var dist = global_position.distance_squared_to(pivot.global_position)
 	print(prev_dist<dist)
 	prev_dist = dist
-	if global_position.distance_squared_to(pivot.global_position) < 5*5:
-		punch_over()
+#	if global_position.distance_squared_to(pivot.global_position) < 5*5:
+#		can_punch_again()
+#		punch_over()
 
 func _init() -> void:
 	connect("tree_entered",self,"_on_tree_entered")

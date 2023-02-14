@@ -4,13 +4,13 @@ export var speed := 200.0
 
 onready var limbs = $"%limbs"
 
-var locked_aim = false
-var locked_feet = false
-
+var locked_aim = 0
+var locked_feet = 0
+var locked_limbs = 0
 
 func _exit():
-	locked_aim = false
-	locked_feet = false
+	locked_aim = 0
+	locked_feet = 0
 	unlock_limbs()
 
 func _ready():
@@ -45,21 +45,33 @@ func _physics_update(delta: float):
 		root.pivot.global_rotation = lerp_angle(root.pivot.global_rotation, target_angle, delta*10.0)
 
 func lock_aim():
-	locked_aim = true
+	locked_aim += 1
 func unlock_aim():
-	locked_aim = false
+	locked_aim  -= 1
 func lock_feet():
-	locked_feet = true
+	locked_feet += 1
 func unlock_feet():
-	locked_feet = false
+	locked_feet -= 1
 
 func cast_over():
-	goto("idle")
+	pass
 
 func lock_limbs():
+	locked_limbs += 1
+	if locked_limbs:
+		_lock_limbs()
+
+func _lock_limbs():
 	for limb in limbs.get_children():
 		limb.lock()
 
 func unlock_limbs():
+	locked_limbs = max(locked_limbs-1,0)
+	if !locked_limbs:
+		_unlock_limbs()
+		
+func _unlock_limbs():
 	for limb in limbs.get_children():
 		limb.unlock()
+
+	
