@@ -1,4 +1,7 @@
 extends State
+func _physics_update(delta):
+	if !locked:
+		root.look_at(root.owner.input_state.aim_pos)
 
 var locked = false
 

@@ -15,6 +15,15 @@ onready var pivot: Node2D = $"%pivot"
 
 
 var velocity := Vector2()
+
+var vertical_position := 0.0
+var vertical_velocity := 0.0
+export var gravity := 100.0
+
+
+export var speed := 200.0
+
+
 var previous_velocity := Vector2()
 var dead = false
 
@@ -32,11 +41,19 @@ func _physics_process(delta: float) -> void:
 	velocity = move_and_slide(velocity)
 	
 	velocity *= 1-delta*damping
-
 	
+	vertical_velocity += gravity * delta
+	vertical_position = min(0.0, vertical_position+vertical_velocity*delta)
+	pivot.position.y = vertical_position*4.0
+	pivot.scale = Vector2(1,1) * (1 - vertical_position/ 10.0)
+	if is_on_floor():
+		vertical_velocity = min(0.0, vertical_velocity)
 	
 	if dead:
 		die()
+
+func is_on_floor():
+	return vertical_position == 0.0
 
 func die():
 	if state_machine.current.is_dead_state:

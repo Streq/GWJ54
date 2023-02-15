@@ -166,6 +166,7 @@ config/icon="res://assets/texture/icon.png"
 
 GlobalInputs="res://src/global/global_inputs.gd"
 ScreenRecorder="*res://src/util/screen_recording/screen_recorder.tscn"
+Group="*res://src/global/group.gd"
 
 [display]
 

@@ -19,6 +19,7 @@ func set_value(val):
 		emit_signal("empty")
 	if value == max_value:
 		emit_signal("full")
+
 func set_max_value(val):
 	max_value = val
 	set_value(value)

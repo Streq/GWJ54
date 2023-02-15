@@ -30,6 +30,8 @@ var start_position := Vector2()
 var start_rotation := 0.0
 var in_attack_motion = false
 
+var vertical_position setget, get_vertical_position
+
 var wielder = false
 
 onready var pivot = get_parent()
@@ -130,7 +132,7 @@ func lerp_to_pivot_from_start_position(weight):
 #	look_at(pivot.global_position)
 	
 	var dist = global_position.distance_squared_to(pivot.global_position)
-	print(prev_dist<dist)
+#	print(prev_dist<dist)
 	prev_dist = dist
 #	if global_position.distance_squared_to(pivot.global_position) < 5*5:
 #		can_punch_again()
@@ -142,3 +144,6 @@ func _init() -> void:
 func _on_tree_entered() -> void:
 	if get_parent() and get_parent().is_in_group("hand") and get_parent().weapon != self:
 		get_parent().add_weapon(self)
+
+func get_vertical_position():
+	return pivot.vertical_position

@@ -16,13 +16,18 @@ export var trigger_predicate := "is_just_pressed"
 
 
 var weapon : Weapon = null
+
+var vertical_position setget, get_vertical_position
+
 onready var state_machine: Node = $"%state_machine"
+
+var locked_aim = false
 
 
 func _ready() -> void:
 	state_machine.initialize()
 
-func _physics_process(delta: float) -> void:
+func _physics_update(delta: float) -> void:
 	state_machine.physics_update(delta)
 	
 	
@@ -30,6 +35,12 @@ func remove_weapon():
 	remove_child(weapon)
 	weapon.disconnect("cast",self,"_on_cast")
 	weapon.disconnect("cast_over",self,"_on_cast_over")
+	for signal_name in [
+		"cast",
+		"cast_over",
+	]:
+		weapon.disconnect(signal_name, self, signal_name)
+	
 	for signal_name in [
 		"lock_feet",
 		"unlock_feet",
@@ -53,6 +64,12 @@ func add_weapon(new_weapon):
 	weapon.connect("cast_over",self,"_on_cast_over")
 	
 	for signal_name in [
+		"cast",
+		"cast_over",
+	]:
+		weapon.connect(signal_name, self, signal_name)
+	
+	for signal_name in [
 		"lock_feet",
 		"unlock_feet",
 		"lock_limbs",
@@ -72,13 +89,19 @@ func forward_signal(object, signal_name):
 func undo_forward_signal(object, signal_name):
 	object.disconnect(signal_name,self,"emit_signal",[signal_name])
 
-func _on_cast():
+func cast():
 	state_machine.current.cast()
 	emit_signal("cast")
 
-func _on_cast_over():
+func cast_over():
 	state_machine.current.cast_over()
 	emit_signal("cast_over")
+
+func lock_aim():
+	locked_aim = true
+func unlock_aim():
+	locked_aim = false
+
 
 func lock():
 	state_machine.current.lock()
@@ -89,3 +112,6 @@ func unlock():
 func trigger_weapon():
 	if is_instance_valid(weapon):
 		weapon.cast()
+
+func get_vertical_position():
+	return owner.vertical_position
