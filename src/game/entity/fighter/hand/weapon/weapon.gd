@@ -26,8 +26,6 @@ func cast_over():
 	emit_signal("cast_over")
 
 func lock_aim():
-	print("lock_aim")
-#	breakpoint
 	emit_signal("lock_aim")
 func unlock_aim():
 	emit_signal("unlock_aim")

@@ -46,8 +46,6 @@ func _physics_update(delta: float):
 	
 	if !locked_aim:
 #		root.pivot.look_at(aim_pos)
-
-		print("rotating_body")
 		root.pivot.global_rotation = lerp_angle(root.pivot.global_rotation, root.input_state.get_aim_dir().angle(), delta*10.0)
 	_physics_update_limbs(delta)
 
