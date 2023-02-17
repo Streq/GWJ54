@@ -45,7 +45,7 @@ func _physics_process(delta: float) -> void:
 	vertical_velocity += gravity * delta
 	vertical_position = min(0.0, vertical_position+vertical_velocity*delta)
 	pivot.position.y = vertical_position*4.0
-	pivot.scale = Vector2(1,1) * (1 - vertical_position/ 10.0)
+#	pivot.scale = Vector2(1,1) * (1 - vertical_position/ 10.0)
 	if is_on_floor():
 		vertical_velocity = min(0.0, vertical_velocity)
 	

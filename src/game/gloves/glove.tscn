@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://src/game/gloves/globe.png" type="Texture" id=1]
 [ext_resource path="res://src/game/hitbox.gd" type="Script" id=2]
 [ext_resource path="res://src/game/gloves/glove.gd" type="Script" id=3]
+[ext_resource path="res://src/game/gloves/clash.png" type="Texture" id=4]
+[ext_resource path="res://src/game/gloves/clash.gd" type="Script" id=5]
 
 [sub_resource type="Animation" id=1]
 length = 0.1
@@ -133,14 +135,99 @@ tracks/4/keys = {
 [sub_resource type="CircleShape2D" id=3]
 radius = 9.0
 
+[sub_resource type="Animation" id=5]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0.1, 0.1 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 4 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:vframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = false
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = false
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath(".:frame")
+tracks/4/interp = 1
+tracks/4/loop_wrap = false
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0.0 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath(".:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.1, 0.1 ), Vector2( 3, 3 ) ]
+}
+
 [node name="glove" type="Node2D"]
 script = ExtResource( 3 )
 reach = 25
-start_pull_back = 15
-start_lag_time = 0.25
-extend_time = 0.2
-retrieve_time = 0.5
-cooldown = 0.25
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
@@ -164,7 +251,7 @@ anims/idle = SubResource( 1 )
 anims/punch = SubResource( 2 )
 
 [node name="hitbox" type="Area2D" parent="."]
-collision_layer = 0
+collision_layer = 4
 collision_mask = 4
 script = ExtResource( 2 )
 
@@ -172,5 +259,29 @@ script = ExtResource( 2 )
 position = Vector2( 5, 0 )
 shape = SubResource( 3 )
 
+[node name="clash" type="Sprite" parent="."]
+visible = false
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 4 )
+script = ExtResource( 5 )
+__meta__ = {
+"_aseprite_wizard_config_": {
+"layer": "",
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"op_exp": false,
+"player": "clash/AnimationPlayer",
+"source": "res://assets/aseprite/clash.aseprite"
+}
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="clash"]
+anims/RESET = SubResource( 5 )
+anims/play = SubResource( 4 )
+
 [connection signal="punching_motion_ended" from="." to="hitbox" method="deactivate"]
 [connection signal="punching_motion_started" from="." to="hitbox" method="activate"]
+[connection signal="abort" from="hitbox" to="." method="_on_hitbox_abort"]
+[connection signal="clash" from="hitbox" to="clash" method="trigger"]

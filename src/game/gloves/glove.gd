@@ -15,12 +15,7 @@ export var retrieve_time := 0.25
 export var cooldown := 0.15
 var left_hand := false
 
-var team setget,get_team
 
-func get_team():
-	if is_instance_valid(wielder):
-		return wielder.team
-	return null
 onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 
@@ -32,14 +27,13 @@ var in_attack_motion = false
 
 var vertical_position setget, get_vertical_position
 
-var wielder = false
 
 onready var pivot = get_parent()
 
 func _physics_process(delta: float) -> void:
 	if !tween or !tween.is_valid() and pivot.is_a_parent_of(self):
 		transform = Transform2D.IDENTITY
-
+		
 func _cast():
 	punch()
 
@@ -47,24 +41,26 @@ func _cast():
 func punch():
 	busy = true
 	
-	if tween:
-		tween.kill()
-	tween = create_tween()
+	renew_tween()
+	
 	lock_limbs()
 	
-	tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
-	
-	tween.tween_callback(animation_player,"play",["punch"])
 	
 	NodeUtils.reparent_keep_transform(self, pivot)
-	#lag
-#	tween.tween_property(self,"position",Vector2(-10,0),start_lag_time).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
-	tween.tween_property(self,"transform",Transform2D(0,Vector2(-start_pull_back,0)),start_lag_time).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
 	
-	#punch
+	startup_lag()
+	punch_motion()
+	retrieve()
+	
+
+func punch_motion():
 	tween.tween_callback(self,"punch_motion_begin")
 	tween.tween_property(self,"position",Vector2(reach,0),extend_time).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUART)
 	tween.parallel().tween_property(self,"scale",Vector2(extend_scale,extend_scale),extend_time).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUART)
+	
+
+
+func retrieve():
 	tween.tween_callback(self,"extended")
 	if retrieve_lag_time:
 		tween.tween_interval(retrieve_lag_time)
@@ -138,12 +134,29 @@ func lerp_to_pivot_from_start_position(weight):
 #		can_punch_again()
 #		punch_over()
 
-func _init() -> void:
-	connect("tree_entered",self,"_on_tree_entered")
-
-func _on_tree_entered() -> void:
-	if get_parent() and get_parent().is_in_group("hand") and get_parent().weapon != self:
-		get_parent().add_weapon(self)
 
 func get_vertical_position():
 	return pivot.vertical_position
+
+
+func _on_hitbox_abort() -> void:
+	abort()
+
+func abort():
+	renew_tween()
+	tween.tween_interval(0.1)
+	retrieve()
+
+func startup_lag():
+	#START LAG
+	
+	tween.tween_callback(animation_player,"play",["punch"])
+#	tween.tween_property(self,"position",Vector2(-10,0),start_lag_time).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
+	tween.tween_property(self,"transform",Transform2D(0,Vector2(-start_pull_back,0)),start_lag_time).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
+
+
+func renew_tween():
+	if tween:
+		tween.kill()
+	tween = create_tween()
+	tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)

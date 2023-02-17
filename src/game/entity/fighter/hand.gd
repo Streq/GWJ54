@@ -33,8 +33,6 @@ func _physics_update(delta: float) -> void:
 	
 func remove_weapon():
 	remove_child(weapon)
-	weapon.disconnect("cast",self,"_on_cast")
-	weapon.disconnect("cast_over",self,"_on_cast_over")
 	for signal_name in [
 		"cast",
 		"cast_over",
@@ -60,8 +58,6 @@ func add_weapon(new_weapon):
 	weapon = new_weapon
 	NodeUtils.add_or_reparent(weapon, self)
 	
-	weapon.connect("cast",self,"_on_cast")
-	weapon.connect("cast_over",self,"_on_cast_over")
 	
 	for signal_name in [
 		"cast",

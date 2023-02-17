@@ -22,3 +22,6 @@ func get_team():
 
 func get_vertical_position():
 	return owner.vertical_position
+
+func handle_hitbox(hitbox):
+	hitbox.affect_hurtbox(self)

@@ -42,12 +42,13 @@ func _physics_update(delta: float):
 			var dir = root.input_state.dir
 			root.velocity = root.velocity.linear_interpolate(dir*root.speed,acceleration*delta)
 	
-	if !locked_aim:
-		var aim_pos = root.input_state.aim_pos
-#		root.pivot.look_at(aim_pos)
-		var target_angle = aim_pos.angle_to_point(root.global_position)
-		root.pivot.global_rotation = lerp_angle(root.pivot.global_rotation, target_angle, delta*10.0)
+
 	
+	if !locked_aim:
+#		root.pivot.look_at(aim_pos)
+
+		print("rotating_body")
+		root.pivot.global_rotation = lerp_angle(root.pivot.global_rotation, root.input_state.get_aim_dir().angle(), delta*10.0)
 	_physics_update_limbs(delta)
 
 

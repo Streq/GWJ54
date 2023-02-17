@@ -7,6 +7,8 @@ func _input(event: InputEvent) -> void:
 			state.A.pressed = event.is_pressed()
 		if event.is_action("B"):
 			state.B.pressed = event.is_pressed()
+		if event.is_action("C"):
+			state.C.pressed = event.is_pressed()
 
 func _physics_process(delta: float) -> void:
 	get_parent().input_state.aim_pos = get_parent().get_global_mouse_position()
