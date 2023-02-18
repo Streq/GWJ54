@@ -1,4 +1,5 @@
 extends Node
+class_name Dungeon
 
 var map = []
 var ROOMS = 100
@@ -81,3 +82,14 @@ func print_map():
 			map_representation += map[i]
 	print(map_representation)
 
+func get_cell(pos:Vector2):
+	return map[pos_to_id(pos)]
+
+func pos_to_id(pos:Vector2)->int:
+	return int(pos.x+10*pos.y)
+
+func id_to_pos(id:int)->Vector2:
+	return Vector2(id%10,id/10)
+
+func set_cell(pos:Vector2, value):
+	map[pos_to_id(pos)] = value
