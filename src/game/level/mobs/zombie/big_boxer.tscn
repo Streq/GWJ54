@@ -10,33 +10,34 @@
 [ext_resource path="res://assets/shader/palette.gdshader" type="Shader" id=8]
 [ext_resource path="res://src/util/color/palette_client.tscn" type="PackedScene" id=9]
 
-[sub_resource type="Image" id=11]
+[sub_resource type="Image" id=15]
 data = {
-"data": PoolByteArray( 246, 231, 213, 255, 156, 156, 156, 255, 107, 107, 107, 255, 57, 57, 57, 255 ),
+"data": PoolByteArray( 252, 252, 252, 255, 188, 188, 188, 255, 255, 0, 0, 255, 0, 0, 0, 255 ),
 "format": "RGBA8",
 "height": 1,
 "mipmaps": false,
 "width": 4
 }
 
-[sub_resource type="ImageTexture" id=9]
+[sub_resource type="ImageTexture" id=13]
 flags = 0
 flags = 0
-image = SubResource( 11 )
+image = SubResource( 15 )
 size = Vector2( 4, 1 )
 
-[sub_resource type="ShaderMaterial" id=10]
+[sub_resource type="ShaderMaterial" id=14]
 resource_local_to_scene = true
 shader = ExtResource( 8 )
 shader_param/palette_size = 4
 shader_param/offset = 0
 shader_param/blue_index_offset = 0.0
-shader_param/palette = SubResource( 9 )
+shader_param/palette = SubResource( 13 )
 
-[node name="zombie" groups=["enemy"] instance=ExtResource( 1 )]
-material = SubResource( 10 )
+[node name="big_boxer" groups=["enemy"] instance=ExtResource( 1 )]
+material = SubResource( 14 )
+scale = Vector2( 2, 2 )
 team = 1
-speed = 50.0
+speed = 25.0
 
 [node name="pivot" parent="." index="3"]
 use_parent_material = true
@@ -44,11 +45,19 @@ use_parent_material = true
 [node name="Sprite" parent="pivot" index="0"]
 use_parent_material = true
 
+[node name="hurtbox" parent="pivot" index="1"]
+knockback_factor = 0.25
+
 [node name="limbs" parent="pivot" index="2"]
 use_parent_material = true
 
 [node name="left" parent="pivot/limbs" index="0"]
 use_parent_material = true
+start_lag_factor = 2.0
+finish_lag_factor = 2.0
+damage_factor = 2.0
+speed_factor = 0.5
+knockback_factor = 2.0
 
 [node name="glove" parent="pivot/limbs/left" index="3" instance=ExtResource( 4 )]
 use_parent_material = true
@@ -58,6 +67,11 @@ extend_time = 0.5
 
 [node name="right" parent="pivot/limbs" index="1"]
 use_parent_material = true
+start_lag_factor = 2.0
+finish_lag_factor = 2.0
+damage_factor = 2.0
+speed_factor = 0.5
+knockback_factor = 2.0
 
 [node name="glove" parent="pivot/limbs/right" index="3" instance=ExtResource( 4 )]
 use_parent_material = true
@@ -65,9 +79,14 @@ reach = 75
 start_lag_time = 0.2
 extend_time = 0.5
 
+[node name="health" parent="." index="5"]
+max_value = 500.0
+value = 500.0
+
 [node name="attack_toward_controller" parent="." index="9" instance=ExtResource( 3 )]
 process_priority = -10
-time_between_attacks = 2.0
+time_between_attacks = 4.0
+attack_range = 200.0
 
 [node name="fade" parent="." index="10" instance=ExtResource( 2 )]
 
@@ -82,10 +101,7 @@ script = ExtResource( 5 )
 chance = 0.5
 
 [node name="palette_client" parent="." index="12" instance=ExtResource( 9 )]
+index = 1
 
 [connection signal="dead" from="." to="fade" method="play" binds= [ "fade" ]]
-[connection signal="set_damage" from="pivot/limbs/left/glove" to="pivot/limbs/left/glove/hitbox" method="set_damage"]
-[connection signal="set_knockback" from="pivot/limbs/left/glove" to="pivot/limbs/left/glove/hitbox" method="set_knockback"]
-[connection signal="set_damage" from="pivot/limbs/right/glove" to="pivot/limbs/right/glove/hitbox" method="set_damage"]
-[connection signal="set_knockback" from="pivot/limbs/right/glove" to="pivot/limbs/right/glove/hitbox" method="set_knockback"]
 [connection signal="trigger" from="spawn/trigger_chance" to="spawn" method="trigger"]

@@ -143,8 +143,9 @@ func lerp_to_pivot_from_start_position(weight):
 
 
 func get_vertical_position():
-	return pivot.vertical_position
-
+	if is_instance_valid(pivot):
+		return pivot.vertical_position
+	return 0.0
 
 func _on_hitbox_abort() -> void:
 	abort()

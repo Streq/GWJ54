@@ -8,7 +8,7 @@
 [ext_resource path="res://assets/shader/palette.gdshader" type="Shader" id=6]
 [ext_resource path="res://src/util/color/palette_client.tscn" type="PackedScene" id=7]
 
-[sub_resource type="Image" id=10]
+[sub_resource type="Image" id=14]
 data = {
 "data": PoolByteArray( 246, 231, 213, 255, 156, 156, 156, 255, 107, 107, 107, 255, 57, 57, 57, 255 ),
 "format": "RGBA8",
@@ -20,7 +20,7 @@ data = {
 [sub_resource type="ImageTexture" id=7]
 flags = 0
 flags = 0
-image = SubResource( 10 )
+image = SubResource( 14 )
 size = Vector2( 4, 1 )
 
 [sub_resource type="ShaderMaterial" id=9]
@@ -31,7 +31,7 @@ shader_param/offset = 0
 shader_param/blue_index_offset = 0.0
 shader_param/palette = SubResource( 7 )
 
-[sub_resource type="Image" id=11]
+[sub_resource type="Image" id=15]
 data = {
 "data": PoolByteArray( 255, 255, 255, 0, 252, 252, 252, 255, 60, 188, 252, 255, 0, 112, 236, 255 ),
 "format": "RGBA8",
@@ -43,7 +43,7 @@ data = {
 [sub_resource type="ImageTexture" id=12]
 flags = 0
 flags = 0
-image = SubResource( 11 )
+image = SubResource( 15 )
 size = Vector2( 4, 1 )
 
 [sub_resource type="ShaderMaterial" id=13]
@@ -81,10 +81,9 @@ margin_top = -31.5
 margin_right = 156.0
 margin_bottom = 31.5
 theme = ExtResource( 3 )
-text = "YOU DIED IN THE DREAM AND IN REAL LIFE 
-AND THE TOWN NEVER GOT SAVED AND THE 
-WIZARD'S WIFE STILL DIDN'T COME BACK 
-SO IT WAS ALL FOR NOTHING
+text = "BOBBY DIED AND THE WIZARD IS NOW CHAMPION 
+
+GODDAMNIT
 
 PRESS R TO RESTART"
 align = 1

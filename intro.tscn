@@ -1,0 +1,214 @@
+[gd_scene load_steps=22 format=2]
+
+[ext_resource path="res://assets/theme/default_theme.tres" type="Theme" id=1]
+[ext_resource path="res://intro.gd" type="Script" id=2]
+[ext_resource path="res://assets/shader/palette.gdshader" type="Shader" id=3]
+[ext_resource path="res://src/util/color/palette_client.tscn" type="PackedScene" id=4]
+[ext_resource path="res://src/game/entity/dude/dude.tscn" type="PackedScene" id=5]
+[ext_resource path="res://src/game/level/mobs/zombie/wizard.tscn" type="PackedScene" id=6]
+
+[sub_resource type="Image" id=22]
+data = {
+"data": PoolByteArray( 246, 231, 213, 255, 156, 156, 156, 255, 107, 107, 107, 255, 57, 57, 57, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=9]
+flags = 0
+flags = 0
+image = SubResource( 22 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=10]
+resource_local_to_scene = true
+shader = ExtResource( 3 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 9 )
+
+[sub_resource type="Image" id=23]
+data = {
+"data": PoolByteArray( 246, 231, 213, 255, 156, 156, 156, 255, 107, 107, 107, 255, 57, 57, 57, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=7]
+flags = 0
+flags = 0
+image = SubResource( 23 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=13]
+resource_local_to_scene = true
+shader = ExtResource( 3 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 7 )
+
+[sub_resource type="Image" id=24]
+data = {
+"data": PoolByteArray( 255, 255, 255, 0, 255, 57, 8, 255, 222, 255, 222, 255, 0, 0, 0, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=15]
+flags = 0
+flags = 0
+image = SubResource( 24 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=16]
+resource_local_to_scene = true
+shader = ExtResource( 3 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 15 )
+
+[sub_resource type="Image" id=25]
+data = {
+"data": PoolByteArray( 255, 255, 255, 0, 255, 227, 99, 255, 255, 57, 8, 255, 0, 0, 0, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=18]
+flags = 0
+flags = 0
+image = SubResource( 25 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=19]
+resource_local_to_scene = true
+shader = ExtResource( 3 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 18 )
+
+[sub_resource type="Image" id=26]
+data = {
+"data": PoolByteArray( 0, 112, 255, 255, 0, 16, 255, 255, 0, 10, 96, 255, 0, 0, 0, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=6]
+flags = 0
+flags = 0
+image = SubResource( 26 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=21]
+resource_local_to_scene = true
+shader = ExtResource( 3 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 6 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="intro" type="CanvasLayer" parent="."]
+script = ExtResource( 2 )
+
+[node name="Label2" type="Label" parent="intro"]
+material = SubResource( 10 )
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -320.0
+margin_top = -117.0
+margin_right = 320.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource( 1 )
+text = "press SPACEBAR to continue"
+align = 1
+valign = 1
+
+[node name="palette_client" parent="intro/Label2" instance=ExtResource( 4 )]
+
+[node name="MarginContainer" type="MarginContainer" parent="intro"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 64
+custom_constants/margin_top = 64
+custom_constants/margin_left = 64
+custom_constants/margin_bottom = 64
+
+[node name="label" type="Label" parent="intro/MarginContainer"]
+unique_name_in_owner = true
+material = SubResource( 10 )
+margin_left = 64.0
+margin_top = 176.0
+margin_right = 576.0
+margin_bottom = 184.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource( 1 )
+text = "asdsadsadsadsadsad"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="palette_client" parent="intro/MarginContainer/label" instance=ExtResource( 4 )]
+
+[node name="Camera2D" type="Camera2D" parent="intro"]
+current = true
+
+[node name="dude" parent="." instance=ExtResource( 5 )]
+unique_name_in_owner = true
+material = SubResource( 13 )
+position = Vector2( 0, 50 )
+rotation = 1.57079
+disabled = true
+
+[node name="Sprite" parent="dude/pivot" index="0"]
+material = SubResource( 16 )
+
+[node name="glove" parent="dude/pivot/limbs/left" index="3"]
+material = SubResource( 19 )
+
+[node name="glove" parent="dude/pivot/limbs/right" index="3"]
+material = SubResource( 19 )
+
+[node name="health_bar" parent="dude" index="6"]
+visible = false
+
+[node name="wizard" parent="." instance=ExtResource( 6 )]
+unique_name_in_owner = true
+position = Vector2( 0, 50 )
+rotation = 1.57079
+disabled = true
+
+[node name="Sprite" parent="wizard/pivot" index="0"]
+material = SubResource( 21 )
+
+[node name="left" parent="wizard/pivot/limbs" index="0"]
+material = SubResource( 21 )
+
+[node name="health_bar" parent="wizard" index="6"]
+visible = false
+
+[node name="attack_toward_controller" parent="wizard" index="9"]
+disabled = true
+
+[editable path="dude"]
+[editable path="wizard"]

@@ -23,8 +23,9 @@ func trigger():
 	var strid : String = owner.get_parent().current_room_cell()
 	var ids = strid.substr(1).split(",")
 	var powerup_id = int(ids[0])
+	var boss_id = int(ids[1])
 	
-	var MOB = ItemPool.pool[powerup_id]
+	var MOB = RoomPool.boss_pool[boss_id]
 	var mob = MOB.instance()
 	add_child(mob)
 	emit_signal("spawn",mob)

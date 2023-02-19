@@ -31,6 +31,7 @@ export var damage_factor := 1.0
 export var reach_factor := 1.0
 export var speed_factor := 1.0
 export var knockback_factor := 1.0
+export var punch_again_factor := 1.0
 
 func _ready() -> void:
 	state_machine.initialize()
@@ -62,8 +63,8 @@ func remove_weapon():
 func add_weapon(new_weapon):
 	if is_instance_valid(weapon):
 		remove_weapon()
-	
 	weapon = new_weapon
+	owner.connect("despawned",weapon,"queue_free")
 	NodeUtils.add_or_reparent(weapon, self)
 	
 	
@@ -82,9 +83,11 @@ func add_weapon(new_weapon):
 		"unlock_aim"
 	]:
 		forward_signal(weapon, signal_name)
-	
+	var material_to_use = material if material else owner.material
+	weapon.material = material_to_use
 	weapon.wielder = owner
 	weapon.limb = self
+	weapon.use_parent_material = false
 	$bare_sprite.hide()
 	
 

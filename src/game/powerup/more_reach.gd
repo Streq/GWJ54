@@ -2,4 +2,4 @@ extends Node
 
 
 func trigger(limb):
-	limb.reach_factor *= 1.5
+	limb.reach_factor *= 1.7

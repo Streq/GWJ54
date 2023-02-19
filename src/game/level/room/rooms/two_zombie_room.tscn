@@ -1,11 +1,13 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://assets/shader/palette.gdshader" type="Shader" id=1]
 [ext_resource path="res://src/game/level/room/room.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/game/level/room/spawn/zombie_spawn.gd" type="Script" id=3]
+[ext_resource path="res://src/game/level/mobs/zombie/zombie.tscn" type="PackedScene" id=4]
 
 [sub_resource type="Image" id=15]
 data = {
-"data": PoolByteArray( 252, 252, 252, 255, 188, 188, 188, 255, 60, 188, 252, 255, 0, 0, 0, 255 ),
+"data": PoolByteArray( 252, 252, 252, 255, 188, 188, 188, 255, 255, 0, 0, 255, 0, 0, 0, 255 ),
 "format": "RGBA8",
 "height": 1,
 "mipmaps": false,
@@ -49,11 +51,18 @@ shader_param/offset = 0
 shader_param/blue_index_offset = 0.0
 shader_param/palette = SubResource( 4 )
 
-[node name="boss_room" instance=ExtResource( 2 )]
+[node name="zombie_room" instance=ExtResource( 2 )]
 material = SubResource( 14 )
 
 [node name="Sprite" parent="." index="0"]
 material = SubResource( 11 )
 
-[node name="palette_client" parent="." index="3"]
-index = 6
+[node name="spawn2" type="Position2D" parent="." index="5"]
+position = Vector2( -160, -96 )
+script = ExtResource( 3 )
+MOB = ExtResource( 4 )
+
+[node name="spawn4" type="Position2D" parent="." index="6"]
+position = Vector2( 160, 96 )
+script = ExtResource( 3 )
+MOB = ExtResource( 4 )

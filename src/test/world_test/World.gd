@@ -51,7 +51,8 @@ func offset_cell(from:int, offset:Vector2):
 	pass
 
 func setup_current_room():
-	var new_room = RoomPool.get_room(dungeon.level, current_room_cell()).instance()
+	var cell = current_room_cell()
+	var new_room = RoomPool.get_room(dungeon.level, cell).instance()
 	new_room.door_up = dungeon.get_cell(current_room_position+Vector2.UP) != null
 	new_room.door_down = dungeon.get_cell(current_room_position+Vector2.DOWN) != null
 	new_room.door_left = dungeon.get_cell(current_room_position+Vector2.LEFT) != null

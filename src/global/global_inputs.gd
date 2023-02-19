@@ -12,4 +12,4 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
 	if event.is_action_pressed("kill_all"):
-		get_tree().call_group("enemy","die")
+		get_tree().call_group("enemy","queue_free")

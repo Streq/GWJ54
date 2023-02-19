@@ -7,7 +7,7 @@
 [ext_resource path="res://assets/shader/palette.gdshader" type="Shader" id=5]
 [ext_resource path="res://src/util/color/palette_client.tscn" type="PackedScene" id=6]
 
-[sub_resource type="Image" id=18]
+[sub_resource type="Image" id=14]
 data = {
 "data": PoolByteArray( 246, 231, 213, 255, 156, 156, 156, 255, 107, 107, 107, 255, 57, 57, 57, 255 ),
 "format": "RGBA8",
@@ -19,7 +19,7 @@ data = {
 [sub_resource type="ImageTexture" id=7]
 flags = 0
 flags = 0
-image = SubResource( 18 )
+image = SubResource( 14 )
 size = Vector2( 4, 1 )
 
 [sub_resource type="ShaderMaterial" id=8]
@@ -30,7 +30,30 @@ shader_param/offset = 0
 shader_param/blue_index_offset = 0.0
 shader_param/palette = SubResource( 7 )
 
-[sub_resource type="Image" id=19]
+[sub_resource type="Image" id=15]
+data = {
+"data": PoolByteArray( 255, 255, 255, 0, 255, 57, 8, 255, 222, 255, 222, 255, 0, 0, 0, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=3]
+flags = 0
+flags = 0
+image = SubResource( 15 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=4]
+resource_local_to_scene = true
+shader = ExtResource( 5 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 3 )
+
+[sub_resource type="Image" id=16]
 data = {
 "data": PoolByteArray( 255, 255, 255, 0, 255, 227, 99, 255, 255, 57, 8, 255, 0, 0, 0, 255 ),
 "format": "RGBA8",
@@ -39,42 +62,19 @@ data = {
 "width": 4
 }
 
-[sub_resource type="ImageTexture" id=11]
+[sub_resource type="ImageTexture" id=12]
 flags = 0
 flags = 0
-image = SubResource( 19 )
+image = SubResource( 16 )
 size = Vector2( 4, 1 )
 
-[sub_resource type="ShaderMaterial" id=12]
+[sub_resource type="ShaderMaterial" id=13]
 resource_local_to_scene = true
 shader = ExtResource( 5 )
 shader_param/palette_size = 4
 shader_param/offset = 0
 shader_param/blue_index_offset = 0.0
-shader_param/palette = SubResource( 11 )
-
-[sub_resource type="Image" id=20]
-data = {
-"data": PoolByteArray( 255, 255, 255, 0, 255, 0, 0, 255, 255, 255, 0, 255, 255, 255, 255, 255 ),
-"format": "RGBA8",
-"height": 1,
-"mipmaps": false,
-"width": 4
-}
-
-[sub_resource type="ImageTexture" id=16]
-flags = 0
-flags = 0
-image = SubResource( 20 )
-size = Vector2( 4, 1 )
-
-[sub_resource type="ShaderMaterial" id=17]
-resource_local_to_scene = true
-shader = ExtResource( 5 )
-shader_param/palette_size = 4
-shader_param/offset = 0
-shader_param/blue_index_offset = 0.0
-shader_param/palette = SubResource( 16 )
+shader_param/palette = SubResource( 12 )
 
 [sub_resource type="Animation" id=1]
 length = 0.001
@@ -125,13 +125,13 @@ tracks/1/keys = {
 material = SubResource( 8 )
 
 [node name="Sprite" parent="pivot" index="0"]
-material = SubResource( 12 )
+material = SubResource( 4 )
 
 [node name="palette_client" parent="pivot/Sprite" index="0" instance=ExtResource( 6 )]
 type = 1
 
 [node name="glove" parent="pivot/limbs/left" index="3" instance=ExtResource( 2 )]
-material = SubResource( 17 )
+material = SubResource( 13 )
 reach = 50
 
 [node name="palette_client" parent="pivot/limbs/left/glove" index="4" instance=ExtResource( 6 )]
@@ -139,7 +139,7 @@ type = 1
 index = 7
 
 [node name="glove" parent="pivot/limbs/right" index="3" instance=ExtResource( 2 )]
-material = SubResource( 17 )
+material = SubResource( 13 )
 reach = 50
 
 [node name="palette_client" parent="pivot/limbs/right/glove" index="4" instance=ExtResource( 6 )]
@@ -153,7 +153,3 @@ anims/RESET = SubResource( 1 )
 anims/fade = SubResource( 2 )
 
 [connection signal="dead" from="." to="fade" method="play" binds= [ "fade" ]]
-[connection signal="set_damage" from="pivot/limbs/left/glove" to="pivot/limbs/left/glove/hitbox" method="set_damage"]
-[connection signal="set_knockback" from="pivot/limbs/left/glove" to="pivot/limbs/left/glove/hitbox" method="set_knockback"]
-[connection signal="set_damage" from="pivot/limbs/right/glove" to="pivot/limbs/right/glove/hitbox" method="set_damage"]
-[connection signal="set_knockback" from="pivot/limbs/right/glove" to="pivot/limbs/right/glove/hitbox" method="set_knockback"]

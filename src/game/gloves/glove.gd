@@ -81,6 +81,8 @@ func retrieve():
 
 func extended():
 	emit_signal("extended")
+#	unlock_limbs()
+
 	NodeUtils.reparent_keep_transform(self, pivot.owner.get_parent())
 #	pivot.owner.punching = false
 #	pivot.owner.locked_in = false

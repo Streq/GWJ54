@@ -6,7 +6,7 @@ onready var delay_timer: Timer = $delay_timer
 var last_hit_right = true
 var should_hit = false
 	
-
+export var disabled := false
 export var delay_on_spawn := 1.0
 
 export var delay_base := 0.2
@@ -33,6 +33,8 @@ func _ready() -> void:
 	
 #	queue_free()
 func _physics_process(delta: float) -> void:
+	if disabled:
+		return
 	var target = Group.get_one("player")
 	if !is_instance_valid(target):
 		return
@@ -41,8 +43,12 @@ func _physics_process(delta: float) -> void:
 	if !spawn_delay.is_stopped():
 		return
 	
+	var is_casting = false
+	var state = owner.state_machine.current
+	if state.name == "casting" and state.locked_limbs:
+		is_casting = true
 	
-	if timer.is_stopped() and delay_timer.is_stopped() and global_position.distance_squared_to(target.global_position)<attack_range*attack_range:
+	if !is_casting and timer.is_stopped() and delay_timer.is_stopped() and global_position.distance_squared_to(target.global_position)<attack_range*attack_range:
 		
 		timer.start()
 		var wait_time = delay_base+delay_random*randf()

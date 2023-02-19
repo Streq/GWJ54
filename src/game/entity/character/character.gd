@@ -19,11 +19,16 @@ var velocity := Vector2()
 
 var vertical_position := 0.0
 var vertical_velocity := 0.0
+
+
+
 export var gravity := 100.0
 
 
 export var speed := 200.0
 
+
+export var disabled := false
 
 var previous_velocity := Vector2()
 var dead = false
@@ -34,6 +39,8 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if disabled:
+		return
 	state_machine.physics_update(delta)
 	animation_player.advance(delta)
 	

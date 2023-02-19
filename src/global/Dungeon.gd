@@ -71,7 +71,14 @@ func generate_dungeon_attempt() -> void:
 			end_rooms.append(current_room)
 	
 	if end_rooms:
-		map[end_rooms.pop_back()] = "f"+str(randi()%ItemPool.pool.size())
+		if level == RoomPool.pools.size()-1:
+			var boss = level
+			var item = randi()%ItemPool.pool.size()
+			map[end_rooms.pop_back()] = "F"+str(item)+","+str(boss)
+		else:
+			var boss = level
+			var item = randi()%ItemPool.pool.size()
+			map[end_rooms.pop_back()] = "f"+str(item)+","+str(boss)
 	if end_rooms:
 		map[end_rooms.pop_back()] = "R"+str(randi()%ItemPool.pool.size())
 	print_map()

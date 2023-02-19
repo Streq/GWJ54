@@ -7,7 +7,7 @@
 
 [node name="description" parent="." index="1"]
 text = "Powerup
-Halves punch startup lag"
+Greatly reduces punch startup lag"
 
 [node name="halve_startup_lag" type="Node" parent="." index="3"]
 script = ExtResource( 1 )

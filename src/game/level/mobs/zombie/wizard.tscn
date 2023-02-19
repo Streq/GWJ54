@@ -1,0 +1,269 @@
+[gd_scene load_steps=22 format=2]
+
+[ext_resource path="res://src/game/entity/fighter/fighter.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/game/entity/enemy/fade_animation.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/game/entity/zombie/attack_toward_controller.tscn" type="PackedScene" id=3]
+[ext_resource path="res://src/game/gloves/glove.tscn" type="PackedScene" id=4]
+[ext_resource path="res://src/game/level/mobs/zombie/trigger_chance.gd" type="Script" id=5]
+[ext_resource path="res://src/game/level/room/spawn/spawn.tscn" type="PackedScene" id=6]
+[ext_resource path="res://src/game/powerup/heart.tscn" type="PackedScene" id=7]
+[ext_resource path="res://src/game/gloves/throw_rock_hand_triple.tscn" type="PackedScene" id=8]
+[ext_resource path="res://assets/shader/palette.gdshader" type="Shader" id=10]
+[ext_resource path="res://src/util/color/palette_client.tscn" type="PackedScene" id=11]
+[ext_resource path="res://src/game/level/mobs/zombie/wizard.png" type="Texture" id=12]
+
+[sub_resource type="Animation" id=1]
+resource_name = "RESET"
+
+[sub_resource type="Animation" id=2]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("pivot/Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 12 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("pivot/Sprite:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("pivot/Sprite:vframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = false
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("pivot/Sprite:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = false
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot/Sprite:frame")
+tracks/4/interp = 1
+tracks/4/loop_wrap = false
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=3]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("pivot/Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 12 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("pivot/Sprite:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("pivot/Sprite:vframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = false
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("pivot/Sprite:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = false
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot/Sprite:frame")
+tracks/4/interp = 1
+tracks/4/loop_wrap = false
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1.0 ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "idle"
+
+[sub_resource type="Image" id=22]
+data = {
+"data": PoolByteArray( 0, 112, 255, 255, 0, 16, 255, 255, 0, 10, 96, 255, 0, 0, 0, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=6]
+flags = 0
+flags = 0
+image = SubResource( 22 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=21]
+resource_local_to_scene = true
+shader = ExtResource( 10 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 6 )
+
+[sub_resource type="Image" id=23]
+data = {
+"data": PoolByteArray( 246, 231, 213, 255, 156, 156, 156, 255, 107, 107, 107, 255, 57, 57, 57, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=9]
+flags = 0
+flags = 0
+image = SubResource( 23 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=10]
+resource_local_to_scene = true
+shader = ExtResource( 10 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 9 )
+
+[node name="zombie" groups=["enemy"] instance=ExtResource( 1 )]
+team = 1
+speed = 50.0
+
+[node name="animation_player" parent="." index="1"]
+anims/RESET = SubResource( 1 )
+anims/casting = SubResource( 2 )
+anims/dead = SubResource( 3 )
+anims/idle = SubResource( 4 )
+
+[node name="Sprite" parent="pivot" index="0"]
+material = SubResource( 21 )
+texture = ExtResource( 12 )
+__meta__ = {
+"_aseprite_wizard_config_": {
+"layer": "",
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"op_exp": false,
+"player": "animation_player",
+"source": "res://assets/aseprite/wizard.aseprite"
+}
+}
+
+[node name="palette_client" parent="pivot/Sprite" index="0" instance=ExtResource( 11 )]
+type = 1
+index = 6
+
+[node name="left" parent="pivot/limbs" index="0"]
+material = SubResource( 21 )
+start_lag_factor = 5.0
+
+[node name="throw_rock_hand" parent="pivot/limbs/left" index="3" instance=ExtResource( 8 )]
+use_parent_material = true
+start_pull_back = 40
+
+[node name="palette_client" parent="pivot/limbs/left" index="4" instance=ExtResource( 11 )]
+type = 1
+index = 6
+
+[node name="right" parent="pivot/limbs" index="1"]
+material = SubResource( 10 )
+start_lag_factor = 3.0
+
+[node name="glove" parent="pivot/limbs/right" index="3" instance=ExtResource( 4 )]
+use_parent_material = true
+reach = 125
+start_pull_back = 40
+start_lag_time = 0.3
+extend_time = 0.5
+extend_scale = 3.0
+damage = 40.0
+
+[node name="palette_client" parent="pivot/limbs/right" index="4" instance=ExtResource( 11 )]
+
+[node name="attack_toward_controller" parent="." index="9" instance=ExtResource( 3 )]
+process_priority = -10
+attack_range = 400.0
+
+[node name="fade" parent="." index="10" instance=ExtResource( 2 )]
+
+[node name="spawn" parent="." index="11" instance=ExtResource( 6 )]
+MOB = ExtResource( 7 )
+trigger_on_ready = false
+cancel_on_cleared = false
+parenthood_level = 2
+
+[node name="trigger_chance" type="Node" parent="spawn" index="0"]
+script = ExtResource( 5 )
+chance = 0.5
+
+[connection signal="dead" from="." to="fade" method="play" binds= [ "fade" ]]
+[connection signal="set_damage" from="pivot/limbs/right/glove" to="pivot/limbs/right/glove/hitbox" method="set_damage"]
+[connection signal="set_knockback" from="pivot/limbs/right/glove" to="pivot/limbs/right/glove/hitbox" method="set_knockback"]
+[connection signal="trigger" from="spawn/trigger_chance" to="spawn" method="trigger"]

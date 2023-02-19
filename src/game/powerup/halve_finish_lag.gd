@@ -2,4 +2,4 @@ extends Node
 
 
 func trigger(limb):
-	limb.finish_lag_factor *= 0.5
+	limb.finish_lag_factor *= 0.25
