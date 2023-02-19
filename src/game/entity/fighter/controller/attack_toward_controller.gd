@@ -27,8 +27,15 @@ func _physics_process(delta: float) -> void:
 			delay_timer.wait_time = wait_time
 			delay_timer.start()
 	
-	get_parent().input_state.A.set_pressed(should_hit and last_hit_right)
-	get_parent().input_state.B.set_pressed(should_hit and !last_hit_right)
+	var input_state = get_parent().input_state
+	
+	if should_hit:
+		pass
+	
+	input_state.A.set_pressed(should_hit and last_hit_right)
+	input_state.B.set_pressed(should_hit and !last_hit_right)
+	
+	
 	
 	get_parent().input_state.dir = global_position.direction_to(target.global_position)
 	get_parent().input_state.aim_pos = target.global_position

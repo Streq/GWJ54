@@ -6,7 +6,7 @@
 [ext_resource path="res://src/game/gloves/clash.png" type="Texture" id=4]
 [ext_resource path="res://src/game/gloves/clash.gd" type="Script" id=5]
 
-[sub_resource type="Animation" id=1]
+[sub_resource type="Animation" id=6]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:texture")
@@ -69,7 +69,7 @@ tracks/4/keys = {
 "values": [ 0.0 ]
 }
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=7]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:texture")
@@ -239,7 +239,7 @@ __meta__ = {
 "o_folder": "",
 "o_name": "",
 "only_visible": false,
-"op_exp": false,
+"op_exp": true,
 "player": "AnimationPlayer",
 "source": "res://assets/aseprite/globe.aseprite"
 }
@@ -247,21 +247,19 @@ __meta__ = {
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "idle"
-anims/idle = SubResource( 1 )
-anims/punch = SubResource( 2 )
+anims/idle = SubResource( 6 )
+anims/punch = SubResource( 7 )
 
 [node name="hitbox" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 4
 script = ExtResource( 2 )
-vertical_knockback = -15.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
 position = Vector2( 5, 0 )
 shape = SubResource( 3 )
 
 [node name="clash" type="Sprite" parent="."]
-visible = false
 scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 4 )
 script = ExtResource( 5 )
@@ -285,4 +283,5 @@ anims/play = SubResource( 4 )
 [connection signal="punching_motion_ended" from="." to="hitbox" method="deactivate"]
 [connection signal="punching_motion_started" from="." to="hitbox" method="activate"]
 [connection signal="abort" from="hitbox" to="." method="_on_hitbox_abort"]
+[connection signal="clash" from="hitbox" to="hitbox" method="abort"]
 [connection signal="clash" from="hitbox" to="clash" method="trigger"]

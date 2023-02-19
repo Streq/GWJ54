@@ -1,0 +1,426 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://src/game/gloves/glove.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/game/gloves/clash.png" type="Texture" id=2]
+[ext_resource path="res://src/game/gloves/zombie_hand.png" type="Texture" id=3]
+
+[sub_resource type="GDScript" id=5]
+script/source = "extends Weapon
+
+signal punching_motion_started
+signal punching_motion_ended
+signal extended
+
+
+export var reach := 100
+export var start_pull_back := 10
+export var start_lag_time := 0.1
+export var extend_time := 0.25
+export var extend_scale := 2.0
+export var retrieve_lag_time := 0.1
+export var retrieve_time := 0.25
+export var cooldown := 0.15
+var left_hand := false
+
+
+onready var animation_player: AnimationPlayer = $AnimationPlayer
+
+
+var busy = false
+var tween : SceneTreeTween = null
+var start_position := Vector2()
+var start_rotation := 0.0
+var in_attack_motion = false
+
+var vertical_position setget, get_vertical_position
+
+
+onready var pivot = get_parent()
+
+func _physics_process(delta: float) -> void:
+	if !tween or !tween.is_valid() and pivot.is_a_parent_of(self):
+		transform = Transform2D.IDENTITY
+		
+func _cast():
+	punch()
+
+
+func punch():
+	busy = true
+	
+	renew_tween()
+	
+	lock_limbs()
+	
+	
+	NodeUtils.reparent_keep_transform(self, pivot)
+	
+	startup_lag()
+	punch_motion()
+	retrieve()
+	
+
+func punch_motion():
+	tween.tween_callback(self,\"punch_motion_begin\")
+	tween.tween_property(self,\"position\",Vector2(reach,0),extend_time).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUART)
+	tween.parallel().tween_property(self,\"scale\",Vector2(extend_scale,extend_scale),extend_time).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUART)
+	
+
+
+func retrieve():
+	tween.tween_callback(self,\"extended\")
+	if retrieve_lag_time:
+		tween.tween_interval(retrieve_lag_time)
+	tween.tween_callback(self,\"retrieving\")
+	tween.tween_method(self,\"lerp_to_pivot_from_start_position\",0.0,1.0,retrieve_time).set_trans(Tween.TRANS_LINEAR)
+	tween.parallel().tween_property(self,\"scale\",pivot.scale,retrieve_time)
+	tween.parallel().tween_callback(self,\"can_punch_again\").set_delay(cooldown)
+	tween.tween_callback(animation_player,\"play\",[\"punch\"])
+	tween.tween_callback(self,\"punch_over\")
+
+func extended():
+	emit_signal(\"extended\")
+	NodeUtils.reparent_keep_transform(self, pivot.owner.get_parent())
+#	pivot.owner.punching = false
+#	pivot.owner.locked_in = false
+	
+	unlock_aim()
+	emit_signal(\"punching_motion_ended\")
+	
+func punch_motion_begin():
+	lock_aim()
+	emit_signal(\"punching_motion_started\")
+
+func retrieving():
+	start_position = global_position
+	start_rotation = global_rotation
+	unlock_limbs()
+	
+
+func can_punch_again():
+	if !busy:
+		return
+	busy = false
+	cast_over()
+	
+
+
+func punch_over():
+	
+	NodeUtils.reparent_keep_transform(self, pivot)
+	transform = Transform2D.IDENTITY
+	if tween:
+		tween.kill()
+	
+	animation_player.play(\"idle\")
+	
+	in_attack_motion = false
+
+
+var prev_dist = 0
+
+
+var weight 
+func lerp_to_pivot_from_start_position(weight):
+	
+	global_position = start_position.linear_interpolate(pivot.global_position,weight)
+	var current_dist = global_position.distance_squared_to(pivot.global_position)
+	var initial_dist = start_position.distance_squared_to(pivot.global_position)
+	if current_dist<initial_dist:
+#		start_position = global_position
+#		weight *= sqrt(initial_dist/current_dist)
+		pass
+	global_rotation = lerp_angle(start_rotation,pivot.global_rotation,weight)
+	
+#	look_at(pivot.global_position)
+	
+	var dist = global_position.distance_squared_to(pivot.global_position)
+#	print(prev_dist<dist)
+	prev_dist = dist
+#	if global_position.distance_squared_to(pivot.global_position) < 5*5:
+#		can_punch_again()
+#		punch_over()
+
+
+func get_vertical_position():
+	return pivot.vertical_position
+
+
+func _on_hitbox_abort() -> void:
+	abort()
+
+func abort():
+	renew_tween()
+	tween.tween_interval(0.1)
+	retrieve()
+
+func startup_lag():
+	#START LAG
+	
+	tween.tween_callback(animation_player,\"play\",[\"punch\"])
+#	tween.tween_property(self,\"position\",Vector2(-10,0),start_lag_time).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
+	tween.tween_property(self,\"transform\",Transform2D(0,Vector2(-start_pull_back,0)),start_lag_time).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
+
+
+func renew_tween():
+	if tween:
+		tween.kill()
+	tween = create_tween()
+	tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
+"
+
+[sub_resource type="Animation" id=6]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 3 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite:vframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = false
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sprite:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = false
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Sprite:frame")
+tracks/4/interp = 1
+tracks/4/loop_wrap = false
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=7]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 3 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite:vframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = false
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sprite:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = false
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Sprite:frame")
+tracks/4/interp = 1
+tracks/4/loop_wrap = false
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="CircleShape2D" id=4]
+radius = 5.09902
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0.1, 0.1 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 2 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:vframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = false
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = false
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath(".:frame")
+tracks/4/interp = 1
+tracks/4/loop_wrap = false
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0.0 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath(".:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.1, 0.1 ), Vector2( 3, 3 ) ]
+}
+
+[node name="zombie_hand" instance=ExtResource( 1 )]
+script = SubResource( 5 )
+reach = 20
+start_pull_back = 20
+start_lag_time = 0.25
+
+[node name="Sprite" parent="." index="0"]
+texture = ExtResource( 3 )
+hframes = 1
+__meta__ = {
+"_aseprite_wizard_config_": {
+"layer": "",
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"op_exp": false,
+"player": "AnimationPlayer",
+"source": "res://assets/aseprite/zombie_hand.aseprite"
+}
+}
+
+[node name="AnimationPlayer" parent="." index="1"]
+anims/idle = SubResource( 6 )
+anims/punch = SubResource( 7 )
+
+[node name="hitbox" parent="." index="2"]
+damage = 10.0
+
+[node name="CollisionShape2D" parent="hitbox" index="0"]
+position = Vector2( 2, 0 )
+shape = SubResource( 4 )
+
+[node name="AnimationPlayer" parent="clash" index="0"]
+anims/RESET = SubResource( 2 )
+anims/play = SubResource( 3 )

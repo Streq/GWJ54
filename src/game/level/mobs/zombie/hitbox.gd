@@ -40,7 +40,7 @@ func _on_area_entered(area : Area2D):
 
 func handle_hitbox(hitbox):
 	if hitbox.damage - damage < 5.0:
-		hitbox.clash_lost()
+		emit_signal("clash_lost")
 		
 
 func clash_lost():

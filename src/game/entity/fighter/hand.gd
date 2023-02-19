@@ -28,6 +28,9 @@ func _ready() -> void:
 	state_machine.initialize()
 
 func _physics_update(delta: float) -> void:
+	if owner.name == "zombie":
+		pass
+	print(owner.name)
 	state_machine.physics_update(delta)
 	
 	

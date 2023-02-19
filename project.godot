@@ -94,6 +94,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/global/render_utils.gd"
 }, {
+"base": "Reference",
+"class": "RoomState",
+"language": "GDScript",
+"path": "res://src/game/level/room/room_state.gd"
+}, {
 "base": "Node2D",
 "class": "Rope",
 "language": "GDScript",
@@ -152,6 +157,7 @@ _global_script_class_icons={
 "PointComparatorByAngleWithSegment": "",
 "PoolArray": "",
 "RenderUtils": "",
+"RoomState": "",
 "Rope": "",
 "RopeUtils": "",
 "StackFiniteStateMachine": "",

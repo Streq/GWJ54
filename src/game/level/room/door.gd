@@ -17,6 +17,10 @@ func open():
 	animation_player.play("open")
 	animation_player.queue("opened")
 
+func opened():
+	open = true
+	animation_player.play("opened")
+
 
 func _on_change_room_area_body_entered(body: Node) -> void:
 	if !open:

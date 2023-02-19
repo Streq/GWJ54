@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://src/game/entity/fighter/fighter.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/game/entity/enemy/fade_animation.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/game/entity/zombie/attack_toward_controller.tscn" type="PackedScene" id=3]
+[ext_resource path="res://src/game/gloves/zombie_hand.tscn" type="PackedScene" id=4]
+
+[node name="zombie" groups=["enemy"] instance=ExtResource( 1 )]
+team = 1
+speed = 50.0
+
+[node name="zombie_hand" parent="pivot/limbs/left" index="3" instance=ExtResource( 4 )]
+
+[node name="zombie_hand" parent="pivot/limbs/right" index="3" instance=ExtResource( 4 )]
+
+[node name="attack_toward_controller" parent="." index="9" instance=ExtResource( 3 )]
+process_priority = -10
+
+[node name="fade" parent="." index="10" instance=ExtResource( 2 )]
+
+[connection signal="dead" from="." to="fade" method="play" binds= [ "fade" ]]

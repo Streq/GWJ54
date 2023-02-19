@@ -12,6 +12,8 @@ func set_dir(val:Vector2):
 	
 
 func _physics_process(delta: float) -> void:
+	if owner.name == "zombie":
+		pass
 	A.stale()
 	B.stale()
 	C.stale()
