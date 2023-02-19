@@ -5,19 +5,24 @@ var map = []
 var ROOMS = 100
 var occupied_rooms = []
 
-export var level := 1
+export var level := 0
 
 
 func _ready() -> void:
-	while occupied_rooms.size()<ROOMS:
-		generate_dungeon()
 	
-
+	
+	generate_dungeon()
+	
 func generate_dungeon() -> void:
+	generate_dungeon_attempt()
+	while occupied_rooms.size()<ROOMS:
+		generate_dungeon_attempt()
+
+func generate_dungeon_attempt() -> void:
 	map = []
 	map.resize(10*10)
-	ROOMS = int((randi()%3) + 5 + 2.6*level)
-	map[44] = "0"
+	ROOMS = int((randi()%3) + 5 + 2.6*(level+1))
+	map[44] = "s" if level != 0 else "S"
 	var room_queue = [44]
 	occupied_rooms = [44]
 	var end_rooms = []
@@ -58,7 +63,7 @@ func generate_dungeon() -> void:
 			if randf()<0.5:
 				continue
 			#	Otherwise, mark the neighbour cell as having a room in it, and add it to the queue.
-			map[neighbour] = "r"
+			map[neighbour] = RoomPool.get_random_id(level)
 			occupied_rooms.append(neighbour)
 			room_queue.push_back(neighbour)
 			added_neighbours += 1
@@ -66,9 +71,9 @@ func generate_dungeon() -> void:
 			end_rooms.append(current_room)
 	
 	if end_rooms:
-		map[end_rooms.pop_back()] = "1"
+		map[end_rooms.pop_back()] = "f"+str(randi()%ItemPool.pool.size())
 	if end_rooms:
-		map[end_rooms.pop_back()] = "R"
+		map[end_rooms.pop_back()] = "R"+str(randi()%ItemPool.pool.size())
 	print_map()
 
 func print_map():
@@ -76,10 +81,10 @@ func print_map():
 	for i in map.size():
 		if !(i % 10):
 			 map_representation+="\n"
-		if !map[i]:
+		if map[i]==null:
 			map_representation += "_"
 		else:
-			map_representation += map[i]
+			map_representation += str(map[i])
 	print(map_representation)
 
 func get_cell(pos:Vector2):

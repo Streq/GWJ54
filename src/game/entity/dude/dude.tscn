@@ -1,35 +1,159 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://src/game/entity/fighter/fighter.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/game/gloves/glove.tscn" type="PackedScene" id=2]
-[ext_resource path="res://src/game/entity/fighter/jump_boots.gd" type="Script" id=3]
+[ext_resource path="res://src/game/gloves/jump_boots.tscn" type="PackedScene" id=3]
+[ext_resource path="res://src/game/entity/enemy/fade_animation.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/shader/palette.gdshader" type="Shader" id=5]
+[ext_resource path="res://src/util/color/palette_client.tscn" type="PackedScene" id=6]
+
+[sub_resource type="Image" id=18]
+data = {
+"data": PoolByteArray( 246, 231, 213, 255, 156, 156, 156, 255, 107, 107, 107, 255, 57, 57, 57, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=7]
+flags = 0
+flags = 0
+image = SubResource( 18 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=8]
+resource_local_to_scene = true
+shader = ExtResource( 5 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 7 )
+
+[sub_resource type="Image" id=19]
+data = {
+"data": PoolByteArray( 255, 255, 255, 0, 255, 227, 99, 255, 255, 57, 8, 255, 0, 0, 0, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=11]
+flags = 0
+flags = 0
+image = SubResource( 19 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=12]
+resource_local_to_scene = true
+shader = ExtResource( 5 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 11 )
+
+[sub_resource type="Image" id=20]
+data = {
+"data": PoolByteArray( 255, 255, 255, 0, 255, 0, 0, 255, 255, 255, 0, 255, 255, 255, 255, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=16]
+flags = 0
+flags = 0
+image = SubResource( 20 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=17]
+resource_local_to_scene = true
+shader = ExtResource( 5 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 16 )
+
+[sub_resource type="Animation" id=1]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "fade"
+length = 2.6
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1, 2.2, 2.3, 2.4, 2.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false, true, false, true, false, true, false, true, false, true ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 2.6 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
 
 [node name="dude" instance=ExtResource( 1 )]
+material = SubResource( 8 )
+
+[node name="Sprite" parent="pivot" index="0"]
+material = SubResource( 12 )
+
+[node name="palette_client" parent="pivot/Sprite" index="0" instance=ExtResource( 6 )]
+type = 1
 
 [node name="glove" parent="pivot/limbs/left" index="3" instance=ExtResource( 2 )]
+material = SubResource( 17 )
 reach = 50
+
+[node name="palette_client" parent="pivot/limbs/left/glove" index="4" instance=ExtResource( 6 )]
+type = 1
+index = 7
 
 [node name="glove" parent="pivot/limbs/right" index="3" instance=ExtResource( 2 )]
+material = SubResource( 17 )
 reach = 50
 
-[node name="jump_boots" type="Node2D" parent="pivot/limbs/feet" index="3"]
-script = ExtResource( 3 )
+[node name="palette_client" parent="pivot/limbs/right/glove" index="4" instance=ExtResource( 6 )]
+type = 1
+index = 7
 
-[node name="Sprite" type="Sprite" parent="pivot/limbs/feet/jump_boots" index="0"]
-__meta__ = {
-"_aseprite_wizard_config_": {
-"layer": "",
-"o_ex_p": "",
-"o_folder": "",
-"o_name": "",
-"only_visible": false,
-"op_exp": false,
-"player": "AnimationPlayer",
-"source": "res://assets/aseprite/globe.aseprite"
-}
-}
+[node name="jump_boots" parent="pivot/limbs/feet" index="3" instance=ExtResource( 3 )]
 
-[node name="cooldown" type="Timer" parent="pivot/limbs/feet/jump_boots" index="1"]
-process_mode = 0
-wait_time = 0.5
-one_shot = true
+[node name="fade" parent="." index="9" instance=ExtResource( 4 )]
+anims/RESET = SubResource( 1 )
+anims/fade = SubResource( 2 )
+
+[connection signal="dead" from="." to="fade" method="play" binds= [ "fade" ]]
+[connection signal="set_damage" from="pivot/limbs/left/glove" to="pivot/limbs/left/glove/hitbox" method="set_damage"]
+[connection signal="set_knockback" from="pivot/limbs/left/glove" to="pivot/limbs/left/glove/hitbox" method="set_knockback"]
+[connection signal="set_damage" from="pivot/limbs/right/glove" to="pivot/limbs/right/glove/hitbox" method="set_damage"]
+[connection signal="set_knockback" from="pivot/limbs/right/glove" to="pivot/limbs/right/glove/hitbox" method="set_knockback"]

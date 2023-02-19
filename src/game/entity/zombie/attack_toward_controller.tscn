@@ -9,8 +9,13 @@ delay_random = 0.0
 
 [node name="Timer" type="Timer" parent="."]
 process_mode = 0
+wait_time = 0.1
 one_shot = true
 
 [node name="delay_timer" type="Timer" parent="."]
+process_mode = 0
+one_shot = true
+
+[node name="spawn_delay" type="Timer" parent="."]
 process_mode = 0
 one_shot = true

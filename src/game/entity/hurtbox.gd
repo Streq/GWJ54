@@ -14,7 +14,7 @@ func receive_damage(damage):
 
 func receive_knockback(direction:Vector2, amount:float, vertical_knockback:float):
 	owner.velocity = direction.normalized()*amount
-	print (owner.name)
+#	print (owner.name)
 	owner.vertical_velocity = vertical_knockback
 
 func get_team():

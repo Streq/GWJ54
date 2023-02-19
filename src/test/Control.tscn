@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/theme/default_theme.tres" type="Theme" id=1]
+
+[node name="Control" type="RichTextLabel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -312.0
+margin_top = -18.0
+margin_right = 328.0
+margin_bottom = 342.0
+theme = ExtResource( 1 )
+bbcode_enabled = true
+bbcode_text = "[center]YOU WANT 
+A 
+[color=red]PIECE[/color] 
+OF [color=red]ME[/color]?[/center]"
+text = "YOU WANT 
+A 
+PIECE 
+OF ME?"

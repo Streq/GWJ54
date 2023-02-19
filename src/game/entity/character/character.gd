@@ -3,6 +3,7 @@ class_name Character
 
 signal dying()
 signal dead()
+signal despawned()
 
 export var damping := 0.0
 
@@ -63,3 +64,6 @@ func die():
 	emit_signal("dying")
 	emit_signal("dead")
 
+func queue_free():
+	.queue_free()
+	emit_signal("despawned")

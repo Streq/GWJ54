@@ -13,8 +13,10 @@ export var extend_scale := 2.0
 export var retrieve_lag_time := 0.1
 export var retrieve_time := 0.25
 export var cooldown := 0.15
+
 var left_hand := false
 
+var velocity : Vector2 setget, get_velocity
 
 onready var animation_player: AnimationPlayer = $AnimationPlayer
 
@@ -26,14 +28,19 @@ var start_rotation := 0.0
 var in_attack_motion = false
 
 var vertical_position setget, get_vertical_position
-
+var previous_global_position 
 
 onready var pivot = get_parent()
 
+func get_velocity():
+	return (global_position-previous_global_position)*60.0
+
 func _physics_process(delta: float) -> void:
+	
 	if !tween or !tween.is_valid() and pivot.is_a_parent_of(self):
 		transform = Transform2D.IDENTITY
-		
+	
+	previous_global_position = global_position
 func _cast():
 	punch()
 
@@ -160,3 +167,4 @@ func renew_tween():
 		tween.kill()
 	tween = create_tween()
 	tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
+

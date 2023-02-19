@@ -1,0 +1,65 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://assets/shader/palette.gdshader" type="Shader" id=1]
+[ext_resource path="res://src/game/level/room/room.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/game/level/room/rooms/spawn_powerup.gd" type="Script" id=3]
+
+[sub_resource type="Image" id=18]
+data = {
+"data": PoolByteArray( 255, 255, 255, 0, 255, 227, 99, 255, 78, 74, 255, 255, 0, 0, 0, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=16]
+flags = 0
+flags = 0
+image = SubResource( 18 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=17]
+resource_local_to_scene = true
+shader = ExtResource( 1 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 16 )
+
+[sub_resource type="Image" id=19]
+data = {
+"data": PoolByteArray( 252, 252, 252, 255, 60, 188, 252, 255, 0, 112, 236, 255, 0, 0, 0, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=4]
+flags = 0
+flags = 0
+image = SubResource( 19 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=11]
+resource_local_to_scene = true
+shader = ExtResource( 1 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 4 )
+
+[node name="reward_room" instance=ExtResource( 2 )]
+material = SubResource( 17 )
+
+[node name="Sprite" parent="." index="0"]
+material = SubResource( 11 )
+
+[node name="palette_client" parent="." index="3"]
+type = 1
+
+[node name="spawn_powerup" type="Node2D" parent="." index="5"]
+script = ExtResource( 3 )
+
+[connection signal="clear" from="." to="enemy_counter" method="clear"]

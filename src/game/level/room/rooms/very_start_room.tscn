@@ -1,0 +1,111 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://assets/shader/palette.gdshader" type="Shader" id=1]
+[ext_resource path="res://src/game/level/room/room.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/util/color/palette_client.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/theme/default_theme.tres" type="Theme" id=4]
+
+[sub_resource type="Image" id=20]
+data = {
+"data": PoolByteArray( 252, 252, 252, 255, 188, 188, 188, 255, 60, 188, 252, 255, 0, 0, 0, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=13]
+flags = 0
+flags = 0
+image = SubResource( 20 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=14]
+resource_local_to_scene = true
+shader = ExtResource( 1 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 13 )
+
+[sub_resource type="Image" id=21]
+data = {
+"data": PoolByteArray( 252, 252, 252, 255, 60, 188, 252, 255, 0, 112, 236, 255, 0, 0, 0, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=4]
+flags = 0
+flags = 0
+image = SubResource( 21 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=11]
+resource_local_to_scene = true
+shader = ExtResource( 1 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 4 )
+
+[sub_resource type="Image" id=22]
+data = {
+"data": PoolByteArray( 255, 255, 255, 0, 0, 0, 0, 255, 255, 0, 0, 255, 255, 155, 0, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=18]
+flags = 0
+flags = 0
+image = SubResource( 22 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=19]
+resource_local_to_scene = true
+shader = ExtResource( 1 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 18 )
+
+[node name="very_start_room" instance=ExtResource( 2 )]
+material = SubResource( 14 )
+
+[node name="Sprite" parent="." index="0"]
+material = SubResource( 11 )
+
+[node name="palette_client" parent="." index="3"]
+index = 6
+
+[node name="Label" type="Label" parent="." index="5"]
+material = SubResource( 19 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -243.0
+margin_top = -101.0
+margin_right = -43.0
+margin_bottom = -49.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource( 4 )
+text = "WASD to move
+mouse to aim
+LEFT CLICK - left PUNCH
+RIGHT CLICK - right PUNCH
+SPACE to DASH"
+align = 1
+valign = 1
+
+[node name="palette_client" parent="Label" index="0" instance=ExtResource( 3 )]
+type = 1
+index = 4
+
+[connection signal="clear" from="." to="enemy_counter" method="clear"]

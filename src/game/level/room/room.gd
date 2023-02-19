@@ -1,6 +1,9 @@
 extends Node2D
 signal exit(direction)
 signal clear()
+
+signal next_level()
+
 export var door_left := false
 export var door_right := false
 export var door_up := false
@@ -67,7 +70,7 @@ func _ready() -> void:
 	if state.cleared:
 		begin_clear()
 	else:
-		close()
+		open()
 	
 
 func setup_door(door,enabled,direction):
@@ -79,3 +82,10 @@ func setup_door(door,enabled,direction):
 func exit(direction):
 	emit_signal("exit",direction)
 
+
+
+func _on_spawn_trophy_spawn(what) -> void:
+	what.connect("next_level",self,"next_level")
+
+func next_level():
+	emit_signal("next_level")

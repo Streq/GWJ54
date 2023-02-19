@@ -11,3 +11,5 @@ func _input(event: InputEvent) -> void:
 		get_tree().reload_current_scene()
 	if event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
+	if event.is_action_pressed("kill_all"):
+		get_tree().call_group("enemy","die")

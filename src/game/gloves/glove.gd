@@ -3,7 +3,8 @@ extends Weapon
 signal punching_motion_started
 signal punching_motion_ended
 signal extended
-
+signal set_damage(value)
+signal set_knockback(value,vertical_value)
 
 export var reach := 100
 export var start_pull_back := 10
@@ -13,6 +14,10 @@ export var extend_scale := 2.0
 export var retrieve_lag_time := 0.1
 export var retrieve_time := 0.25
 export var cooldown := 0.15
+export var damage := 20.0
+export var knockback := 150.0
+export var vertical_knockback := -25.0
+
 var left_hand := false
 
 
@@ -45,6 +50,9 @@ func punch():
 	
 	lock_limbs()
 	
+	emit_signal("set_damage",damage*limb.damage_factor)
+	emit_signal("set_knockback",knockback*limb.knockback_factor,vertical_knockback*limb.knockback_factor)
+	
 	
 	NodeUtils.reparent_keep_transform(self, pivot)
 	
@@ -55,19 +63,19 @@ func punch():
 
 func punch_motion():
 	tween.tween_callback(self,"punch_motion_begin")
-	tween.tween_property(self,"position",Vector2(reach,0),extend_time).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUART)
-	tween.parallel().tween_property(self,"scale",Vector2(extend_scale,extend_scale),extend_time).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUART)
+	tween.tween_property(self,"position",Vector2(reach*limb.reach_factor,0),extend_time/limb.speed_factor).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUART)
+	tween.parallel().tween_property(self,"scale",Vector2(extend_scale,extend_scale),extend_time/limb.speed_factor).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUART)
 	
 
 
 func retrieve():
 	tween.tween_callback(self,"extended")
 	if retrieve_lag_time:
-		tween.tween_interval(retrieve_lag_time)
+		tween.tween_interval(retrieve_lag_time*limb.finish_lag_factor)
 	tween.tween_callback(self,"retrieving")
-	tween.tween_method(self,"lerp_to_pivot_from_start_position",0.0,1.0,retrieve_time).set_trans(Tween.TRANS_LINEAR)
-	tween.parallel().tween_property(self,"scale",pivot.scale,retrieve_time)
-	tween.parallel().tween_callback(self,"can_punch_again").set_delay(cooldown)
+	tween.tween_method(self,"lerp_to_pivot_from_start_position",0.0,1.0,retrieve_time*limb.finish_lag_factor).set_trans(Tween.TRANS_LINEAR)
+	tween.parallel().tween_property(self,"scale",pivot.scale,retrieve_time*limb.finish_lag_factor)
+	tween.parallel().tween_callback(self,"can_punch_again").set_delay(cooldown*limb.finish_lag_factor)
 	tween.tween_callback(animation_player,"play",["punch"])
 	tween.tween_callback(self,"punch_over")
 
@@ -152,7 +160,7 @@ func startup_lag():
 	
 	tween.tween_callback(animation_player,"play",["punch"])
 #	tween.tween_property(self,"position",Vector2(-10,0),start_lag_time).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
-	tween.tween_property(self,"transform",Transform2D(0,Vector2(-start_pull_back,0)),start_lag_time).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
+	tween.tween_property(self,"transform",Transform2D(0,Vector2(-start_pull_back,0)),start_lag_time*limb.start_lag_factor).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
 
 
 func renew_tween():

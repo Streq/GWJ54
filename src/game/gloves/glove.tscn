@@ -230,6 +230,7 @@ script = ExtResource( 3 )
 reach = 25
 
 [node name="Sprite" type="Sprite" parent="."]
+use_parent_material = true
 texture = ExtResource( 1 )
 hframes = 2
 __meta__ = {
@@ -282,6 +283,8 @@ anims/play = SubResource( 4 )
 
 [connection signal="punching_motion_ended" from="." to="hitbox" method="deactivate"]
 [connection signal="punching_motion_started" from="." to="hitbox" method="activate"]
+[connection signal="set_damage" from="." to="hitbox" method="set_damage"]
+[connection signal="set_knockback" from="." to="hitbox" method="set_knockback"]
 [connection signal="abort" from="hitbox" to="." method="_on_hitbox_abort"]
 [connection signal="clash" from="hitbox" to="hitbox" method="abort"]
 [connection signal="clash" from="hitbox" to="clash" method="trigger"]

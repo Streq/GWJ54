@@ -171,15 +171,18 @@ _global_script_class_icons={
 [application]
 
 config/name="GWJ54"
-run/main_scene="res://src/main.tscn"
+run/main_scene="res://src/test/world_test/World.tscn"
 config/icon="res://assets/texture/icon.png"
 
 [autoload]
 
+RoomPool="*res://src/global/RoomPool.tscn"
 GlobalInputs="res://src/global/global_inputs.gd"
 ScreenRecorder="*res://src/util/screen_recording/screen_recorder.tscn"
 Group="*res://src/global/group.gd"
 GlobalPalette="*res://src/util/color/GlobalPalette.tscn"
+Fps="*res://src/global/FPS.tscn"
+ItemPool="*res://src/item_pool.tscn"
 
 [display]
 
@@ -258,12 +261,21 @@ save_recording={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":71,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
+kill_all={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":75,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [layer_names]
 
 2d_physics/layer_1="terrain"
 2d_physics/layer_2="entity"
 2d_physics/layer_3="hurtbox"
+
+[network]
+
+limits/debugger_stdout/max_warnings_per_second=1000
 
 [physics]
 

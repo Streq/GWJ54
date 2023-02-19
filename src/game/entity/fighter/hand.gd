@@ -24,13 +24,18 @@ onready var state_machine: Node = $"%state_machine"
 var locked_aim = false
 
 
+export var can_aim_while_attacking := false
+export var start_lag_factor := 1.0
+export var finish_lag_factor := 1.0
+export var damage_factor := 1.0
+export var reach_factor := 1.0
+export var speed_factor := 1.0
+export var knockback_factor := 1.0
+
 func _ready() -> void:
 	state_machine.initialize()
 
 func _physics_update(delta: float) -> void:
-	if owner.name == "zombie":
-		pass
-	print(owner.name)
 	state_machine.physics_update(delta)
 	
 	
@@ -79,6 +84,7 @@ func add_weapon(new_weapon):
 		forward_signal(weapon, signal_name)
 	
 	weapon.wielder = owner
+	weapon.limb = self
 	$bare_sprite.hide()
 	
 
@@ -97,7 +103,7 @@ func cast_over():
 	emit_signal("cast_over")
 
 func lock_aim():
-	locked_aim = true
+	locked_aim = true and !can_aim_while_attacking
 func unlock_aim():
 	locked_aim = false
 

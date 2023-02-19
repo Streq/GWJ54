@@ -1,11 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://src/game/entity/fighter/controller/attack_toward_controller.gd" type="Script" id=1]
 [ext_resource path="res://assets/texture/background_tile.png" type="Texture" id=2]
 [ext_resource path="res://src/util/background/repeating_background.gd" type="Script" id=3]
 [ext_resource path="res://src/game/entity/dude/dude.tscn" type="PackedScene" id=4]
 [ext_resource path="res://src/game/player_controller.gd" type="Script" id=5]
-[ext_resource path="res://src/game/entity/fighter/fighter.tscn" type="PackedScene" id=6]
 
 [node name="Node2D" type="Node2D"]
 
@@ -33,22 +31,3 @@ script = ExtResource( 5 )
 
 [node name="Camera2D" type="Camera2D" parent="dude"]
 current = true
-
-[node name="fighter2" parent="." instance=ExtResource( 6 )]
-process_priority = 1
-position = Vector2( 497, 179 )
-team = 1
-speed = 50.0
-
-[node name="attack_toward_controller" type="Node2D" parent="fighter2"]
-script = ExtResource( 1 )
-delay_base = 0.0
-delay_random = 0.0
-
-[node name="Timer" type="Timer" parent="fighter2/attack_toward_controller"]
-process_mode = 0
-one_shot = true
-
-[node name="delay_timer" type="Timer" parent="fighter2/attack_toward_controller"]
-process_mode = 0
-one_shot = true

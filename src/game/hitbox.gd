@@ -1,11 +1,11 @@
 extends Area2D
 signal abort
 signal clash
-
+signal hit
 signal hit_landed(on)
 
 
-export var damage := 20.0
+export var damage := 20.0 setget set_damage
 export var knockback := 150.0
 export var vertical_knockback := -25.0
 
@@ -18,6 +18,12 @@ export var disabled = true
 export var clashable := true
 
 
+func set_knockback(val,vertical_val):
+	knockback = val
+	vertical_knockback = vertical_val
+
+func set_damage(val):
+	damage = val
 func _ready() -> void:
 	connect("area_entered",self,"_on_area_entered")
 	if !clashable:
@@ -55,6 +61,7 @@ func abort():
 
 func affect_hurtbox(hurtbox):
 	emit_signal("hit_landed",hurtbox)
+	emit_signal("hit")
 	hurtbox.receive_damage(damage)
 	hurtbox.receive_knockback(Vector2.RIGHT.rotated(global_rotation), knockback, vertical_knockback)
 

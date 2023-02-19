@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://src/game/gloves/muzzle.gd" type="Script" id=1]
 [ext_resource path="res://src/game/gloves/throw_rock_hand.gd" type="Script" id=2]
+[ext_resource path="res://src/game/gloves/bullet.tscn" type="PackedScene" id=3]
 [ext_resource path="res://src/game/gloves/rock_hand.png" type="Texture" id=5]
 
 [sub_resource type="Animation" id=6]
@@ -132,8 +133,11 @@ tracks/4/keys = {
 
 [node name="throw_rock_hand" type="Node2D"]
 script = ExtResource( 2 )
+reach = 20
+extend_time = 0.2
 
 [node name="Sprite" type="Sprite" parent="."]
+use_parent_material = true
 texture = ExtResource( 5 )
 __meta__ = {
 "_aseprite_wizard_config_": {
@@ -155,3 +159,6 @@ anims/punch = SubResource( 7 )
 
 [node name="muzzle" type="Node2D" parent="."]
 script = ExtResource( 1 )
+PROJECTILE = ExtResource( 3 )
+
+[connection signal="extended" from="." to="muzzle" method="shoot"]

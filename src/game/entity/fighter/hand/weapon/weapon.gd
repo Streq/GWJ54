@@ -12,6 +12,8 @@ signal unlock_limbs()
 
 var wielder = false
 
+var limb = null
+
 func full_body_cast():
 	emit_signal("full_body_cast")
 

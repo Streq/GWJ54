@@ -1,0 +1,13 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://src/game/level/items/item_pool.gd" type="Script" id=1]
+[ext_resource path="res://src/game/powerup/faster_punch_powerup.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/game/powerup/jabaim_powerup.tscn" type="PackedScene" id=3]
+[ext_resource path="res://src/game/powerup/halve_finish_lag_powerup.tscn" type="PackedScene" id=4]
+[ext_resource path="res://src/game/powerup/bigger_punch_powerup.tscn" type="PackedScene" id=5]
+[ext_resource path="res://src/game/powerup/more_reach_powerup.tscn" type="PackedScene" id=6]
+[ext_resource path="res://src/game/powerup/halve_start_lag_powerup.tscn" type="PackedScene" id=7]
+
+[node name="item_pool" type="Node"]
+script = ExtResource( 1 )
+pool = [ ExtResource( 5 ), ExtResource( 2 ), ExtResource( 4 ), ExtResource( 7 ), ExtResource( 3 ), ExtResource( 6 ) ]

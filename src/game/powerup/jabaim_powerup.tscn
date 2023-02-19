@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://src/game/powerup/can_aim_while_jabbing_effect.gd" type="Script" id=1]
+[ext_resource path="res://src/game/powerup/powerup.tscn" type="PackedScene" id=2]
+
+[node name="jabaim_powerup" instance=ExtResource( 2 )]
+
+[node name="description" parent="." index="1"]
+text = "Powerup
+Can change aim mid-punch"
+
+[node name="can_aim_while_jabbing_effect" type="Node" parent="." index="3"]
+script = ExtResource( 1 )
+
+[connection signal="trigger" from="." to="can_aim_while_jabbing_effect" method="trigger"]

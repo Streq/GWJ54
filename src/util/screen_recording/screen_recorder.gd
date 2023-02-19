@@ -58,4 +58,5 @@ func save_frames():
 
 
 func _ready() -> void:
-	pass
+	if !OS.is_debug_build():
+		queue_free()

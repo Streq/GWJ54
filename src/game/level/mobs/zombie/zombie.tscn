@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://src/game/entity/fighter/fighter.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/game/entity/enemy/fade_animation.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/game/entity/zombie/attack_toward_controller.tscn" type="PackedScene" id=3]
 [ext_resource path="res://src/game/gloves/zombie_hand.tscn" type="PackedScene" id=4]
+[ext_resource path="res://src/game/powerup/heart.tscn" type="PackedScene" id=5]
+[ext_resource path="res://src/game/level/room/spawn/spawn.tscn" type="PackedScene" id=6]
+[ext_resource path="res://src/game/level/mobs/zombie/trigger_chance.gd" type="Script" id=7]
 
 [node name="zombie" groups=["enemy"] instance=ExtResource( 1 )]
 team = 1
@@ -13,9 +16,25 @@ speed = 50.0
 
 [node name="zombie_hand" parent="pivot/limbs/right" index="3" instance=ExtResource( 4 )]
 
+[node name="health" parent="." index="5"]
+max_value = 60.0
+value = 60.0
+
 [node name="attack_toward_controller" parent="." index="9" instance=ExtResource( 3 )]
 process_priority = -10
 
 [node name="fade" parent="." index="10" instance=ExtResource( 2 )]
 
+[node name="spawn" parent="." index="11" instance=ExtResource( 6 )]
+MOB = ExtResource( 5 )
+trigger_on_ready = false
+cancel_on_cleared = false
+parenthood_level = 2
+
+[node name="trigger_chance" type="Node" parent="spawn" index="0"]
+script = ExtResource( 7 )
+chance = 0.1
+
 [connection signal="dead" from="." to="fade" method="play" binds= [ "fade" ]]
+[connection signal="despawned" from="." to="spawn/trigger_chance" method="trigger"]
+[connection signal="trigger" from="spawn/trigger_chance" to="spawn" method="trigger"]

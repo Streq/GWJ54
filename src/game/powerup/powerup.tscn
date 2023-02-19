@@ -1,0 +1,58 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://powerup.gd" type="Script" id=1]
+[ext_resource path="res://assets/theme/default_theme.tres" type="Theme" id=2]
+[ext_resource path="res://assets/texture/powerup.png" type="Texture" id=3]
+[ext_resource path="res://src/game/powerup/hurtbox.gd" type="Script" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+[node name="powerup" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 1 )
+
+[node name="description" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -116.0
+margin_top = -48.0
+margin_right = 116.0
+margin_bottom = -29.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource( 2 )
+text = "Powerup
+Doesn't lock aim while punching"
+align = 1
+valign = 1
+
+[node name="howto" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -132.0
+margin_top = 30.0
+margin_right = 132.0
+margin_bottom = 49.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource( 2 )
+text = "(To get a powerup punch it 
+with the hand you want to get it)"
+align = 1
+valign = 1
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+
+[connection signal="hitbox" from="Area2D" to="." method="handle_hitbox"]

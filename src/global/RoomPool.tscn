@@ -1,0 +1,19 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://src/game/level/room/rooms/very_start_room.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/game/level/room/rooms/thrower_room.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/global/level_pool.gd" type="Script" id=3]
+[ext_resource path="res://src/game/level/room/rooms/zombie_room.tscn" type="PackedScene" id=4]
+[ext_resource path="res://src/game/level/room/rooms/boss_room.tscn" type="PackedScene" id=5]
+[ext_resource path="res://src/game/level/room/rooms/start_room.tscn" type="PackedScene" id=6]
+[ext_resource path="res://src/game/level/room/rooms/reward_room.tscn" type="PackedScene" id=7]
+[ext_resource path="res://src/game/level/room/rooms/one_zombie_room.tscn" type="PackedScene" id=8]
+[ext_resource path="res://src/game/level/room/rooms/one_thrower_room.tscn" type="PackedScene" id=9]
+
+[node name="room_pool" type="Node"]
+script = ExtResource( 3 )
+pools = [ [ ExtResource( 8 ), ExtResource( 9 ) ], [ ExtResource( 4 ), ExtResource( 2 ) ] ]
+very_start_room = ExtResource( 1 )
+start_room = ExtResource( 6 )
+boss_room = ExtResource( 5 )
+reward_room = ExtResource( 7 )

@@ -1,11 +1,35 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/shader/palette.gdshader" type="Shader" id=1]
 [ext_resource path="res://src/game/level/room/room.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/game/level/room/spawn/zombie_spawn.gd" type="Script" id=3]
 [ext_resource path="res://src/game/level/mobs/zombie/zombie.tscn" type="PackedScene" id=4]
+[ext_resource path="res://src/game/level/room/spawn/spawn.tscn" type="PackedScene" id=5]
 
-[sub_resource type="Image" id=12]
+[sub_resource type="Image" id=15]
+data = {
+"data": PoolByteArray( 252, 252, 252, 255, 188, 188, 188, 255, 255, 0, 0, 255, 0, 0, 0, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=13]
+flags = 0
+flags = 0
+image = SubResource( 15 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=14]
+resource_local_to_scene = true
+shader = ExtResource( 1 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 13 )
+
+[sub_resource type="Image" id=16]
 data = {
 "data": PoolByteArray( 252, 252, 252, 255, 60, 188, 252, 255, 0, 112, 236, 255, 0, 0, 0, 255 ),
 "format": "RGBA8",
@@ -17,7 +41,7 @@ data = {
 [sub_resource type="ImageTexture" id=4]
 flags = 0
 flags = 0
-image = SubResource( 12 )
+image = SubResource( 16 )
 size = Vector2( 4, 1 )
 
 [sub_resource type="ShaderMaterial" id=11]
@@ -29,13 +53,16 @@ shader_param/blue_index_offset = 0.0
 shader_param/palette = SubResource( 4 )
 
 [node name="zombie_room" instance=ExtResource( 2 )]
+material = SubResource( 14 )
 
 [node name="Sprite" parent="." index="0"]
 material = SubResource( 11 )
 
-[node name="spawn" type="Position2D" parent="." index="5"]
+[node name="spawn" parent="." index="5" instance=ExtResource( 5 )]
 position = Vector2( 160, -96 )
-script = ExtResource( 3 )
+__meta__ = {
+"_edit_pinned_properties_": [ "position" ]
+}
 MOB = ExtResource( 4 )
 
 [node name="spawn2" type="Position2D" parent="." index="6"]
@@ -52,5 +79,3 @@ MOB = ExtResource( 4 )
 position = Vector2( 160, 96 )
 script = ExtResource( 3 )
 MOB = ExtResource( 4 )
-
-[connection signal="clear" from="." to="enemy_counter" method="clear"]

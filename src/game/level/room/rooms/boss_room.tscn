@@ -1,0 +1,91 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://assets/shader/palette.gdshader" type="Shader" id=1]
+[ext_resource path="res://src/game/level/room/room.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/game/level/room/spawn/zombie_spawn.gd" type="Script" id=3]
+[ext_resource path="res://src/game/level/mobs/zombie/boxer.tscn" type="PackedScene" id=4]
+[ext_resource path="res://src/game/level/room/ladders.tscn" type="PackedScene" id=5]
+[ext_resource path="res://src/game/level/room/rooms/spawn_powerup.gd" type="Script" id=6]
+[ext_resource path="res://assets/texture/tramp.png" type="Texture" id=7]
+
+[sub_resource type="Image" id=15]
+data = {
+"data": PoolByteArray( 254, 254, 133, 255, 254, 254, 133, 255, 115, 74, 0, 255, 0, 0, 0, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=13]
+flags = 0
+flags = 0
+image = SubResource( 15 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=14]
+resource_local_to_scene = true
+shader = ExtResource( 1 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 13 )
+
+[sub_resource type="Image" id=16]
+data = {
+"data": PoolByteArray( 252, 252, 252, 255, 60, 188, 252, 255, 0, 112, 236, 255, 0, 0, 0, 255 ),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 4
+}
+
+[sub_resource type="ImageTexture" id=4]
+flags = 0
+flags = 0
+image = SubResource( 16 )
+size = Vector2( 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=11]
+resource_local_to_scene = true
+shader = ExtResource( 1 )
+shader_param/palette_size = 4
+shader_param/offset = 0
+shader_param/blue_index_offset = 0.0
+shader_param/palette = SubResource( 4 )
+
+[node name="boss_room" instance=ExtResource( 2 )]
+material = SubResource( 14 )
+
+[node name="Sprite" parent="." index="0"]
+material = SubResource( 11 )
+
+[node name="palette_client" parent="." index="3"]
+index = 7
+
+[node name="spawn" type="Position2D" parent="." index="5"]
+script = ExtResource( 3 )
+MOB = ExtResource( 4 )
+
+[node name="spawn_trophy" type="Position2D" parent="." index="6"]
+use_parent_material = true
+position = Vector2( 216, 88 )
+script = ExtResource( 3 )
+MOB = ExtResource( 5 )
+trigger_on_ready = false
+cancel_on_cleared = false
+
+[node name="Sprite" type="Sprite" parent="spawn_trophy" index="0"]
+use_parent_material = true
+z_index = -2
+texture = ExtResource( 7 )
+
+[node name="spawn_powerup" type="Node2D" parent="." index="7"]
+script = ExtResource( 6 )
+trigger_on_ready = false
+cancel_on_cleared = false
+
+[connection signal="clear" from="." to="enemy_counter" method="clear"]
+[connection signal="clear" from="." to="spawn_trophy" method="trigger"]
+[connection signal="clear" from="." to="spawn_powerup" method="trigger"]
+[connection signal="spawn" from="spawn_trophy" to="." method="_on_spawn_trophy_spawn"]
