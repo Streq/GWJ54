@@ -102,7 +102,9 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource( 5 )
 text = "Bobby beat the wizard in the dream world and so the wizard died in real life (that's how it works), the curse is lifted and Bobby is the new champion!!!
-The End"
+The End
+
+Thank you for playing!"
 align = 1
 valign = 1
 autowrap = true

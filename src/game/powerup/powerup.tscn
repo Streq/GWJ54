@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://powerup.gd" type="Script" id=1]
 [ext_resource path="res://assets/theme/default_theme.tres" type="Theme" id=2]
 [ext_resource path="res://assets/texture/powerup.png" type="Texture" id=3]
 [ext_resource path="res://src/game/powerup/hurtbox.gd" type="Script" id=4]
+[ext_resource path="res://src/game/powerup/sound.gd" type="Script" id=5]
+[ext_resource path="res://assets/audio/sfx/powerUp.wav" type="AudioStream" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -55,4 +57,11 @@ valign = 1
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 3 )
 
+[node name="powerup_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 6 )
+volume_db = -12.0
+script = ExtResource( 5 )
+parenthood = 1
+
+[connection signal="triggered" from="." to="powerup_sound" method="play"]
 [connection signal="hitbox" from="Area2D" to="." method="handle_hitbox"]

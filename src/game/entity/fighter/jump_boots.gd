@@ -1,5 +1,5 @@
 extends Weapon
-
+signal jump
 
 var casting = false
 onready var cooldown: Timer = $cooldown
@@ -9,6 +9,7 @@ func _cast():
 	if !cooldown.is_stopped() or !wielder.is_on_floor() or casting:
 		cast_over()
 		return
+	emit_signal("jump")
 	cooldown.start()
 	casting = true
 	wielder.vertical_velocity = -5.0

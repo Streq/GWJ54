@@ -1,10 +1,14 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://src/game/gloves/globe.png" type="Texture" id=1]
 [ext_resource path="res://src/game/hitbox.gd" type="Script" id=2]
 [ext_resource path="res://src/game/gloves/glove.gd" type="Script" id=3]
 [ext_resource path="res://src/game/gloves/clash.png" type="Texture" id=4]
 [ext_resource path="res://src/game/gloves/clash.gd" type="Script" id=5]
+[ext_resource path="res://assets/audio/sfx/hit.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/audio/sfx/clash.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/audio/sfx/swing.wav" type="AudioStream" id=8]
+[ext_resource path="res://src/game/gloves/swing.gd" type="Script" id=9]
 
 [sub_resource type="Animation" id=6]
 length = 0.1
@@ -281,10 +285,26 @@ __meta__ = {
 anims/RESET = SubResource( 5 )
 anims/play = SubResource( 4 )
 
+[node name="hit" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 6 )
+volume_db = -12.0
+
+[node name="swing" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 8 )
+volume_db = -24.0
+script = ExtResource( 9 )
+
+[node name="clash_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 7 )
+volume_db = -18.0
+
 [connection signal="punching_motion_ended" from="." to="hitbox" method="deactivate"]
 [connection signal="punching_motion_started" from="." to="hitbox" method="activate"]
+[connection signal="punching_motion_started" from="." to="swing" method="play"]
 [connection signal="set_damage" from="." to="hitbox" method="set_damage"]
 [connection signal="set_knockback" from="." to="hitbox" method="set_knockback"]
 [connection signal="abort" from="hitbox" to="." method="_on_hitbox_abort"]
 [connection signal="clash" from="hitbox" to="hitbox" method="abort"]
 [connection signal="clash" from="hitbox" to="clash" method="trigger"]
+[connection signal="clash" from="hitbox" to="clash_sound" method="play"]
+[connection signal="hit" from="hitbox" to="hit" method="play"]

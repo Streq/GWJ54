@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://src/game/gloves/glove.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/game/gloves/clash.png" type="Texture" id=2]
 [ext_resource path="res://src/game/gloves/zombie_hand.png" type="Texture" id=3]
+[ext_resource path="res://assets/audio/sfx/zombie_hit.wav" type="AudioStream" id=4]
 
 [sub_resource type="GDScript" id=5]
 script/source = "extends Weapon
@@ -425,3 +426,6 @@ shape = SubResource( 4 )
 [node name="AnimationPlayer" parent="clash" index="0"]
 anims/RESET = SubResource( 2 )
 anims/play = SubResource( 3 )
+
+[node name="hit" parent="." index="4"]
+stream = ExtResource( 4 )
