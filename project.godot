@@ -183,6 +183,7 @@ Group="*res://src/global/group.gd"
 GlobalPalette="*res://src/util/color/GlobalPalette.tscn"
 Fps="*res://src/global/FPS.tscn"
 ItemPool="*res://src/item_pool.tscn"
+Music="*res://music.tscn"
 
 [display]
 

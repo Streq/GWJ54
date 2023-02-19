@@ -25,7 +25,7 @@ onready var current_room
 onready var dude: KinematicBody2D = $dude
 
 func _ready() -> void:
-	
+	Music.play("normal")
 	randomize()
 	dungeon.generate_dungeon()
 	setup_current_room()

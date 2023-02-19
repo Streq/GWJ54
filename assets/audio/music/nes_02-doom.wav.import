@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/nes_02-doom.wav-178f1c699079e75199df909cde0f3ce1.sample"
+
+[deps]
+
+source_file="res://assets/audio/music/nes_02-doom.wav"
+dest_files=[ "res://.import/nes_02-doom.wav-178f1c699079e75199df909cde0f3ce1.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

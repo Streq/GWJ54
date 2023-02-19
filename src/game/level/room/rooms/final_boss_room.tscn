@@ -1,7 +1,8 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://assets/shader/palette.gdshader" type="Shader" id=1]
 [ext_resource path="res://src/game/level/room/room.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/game/level/room/rooms/onfinish.gd" type="Script" id=3]
 [ext_resource path="res://assets/theme/default_theme.tres" type="Theme" id=5]
 [ext_resource path="res://src/util/color/palette_client.tscn" type="PackedScene" id=6]
 [ext_resource path="res://src/game/level/room/rooms/spawn_boss.gd" type="Script" id=7]
@@ -117,4 +118,8 @@ index = 4
 position = Vector2( -128, -48 )
 script = ExtResource( 7 )
 
+[node name="onfinish" type="Node" parent="." index="7"]
+script = ExtResource( 3 )
+
 [connection signal="clear" from="." to="Label" method="show"]
+[connection signal="clear" from="." to="onfinish" method="trigger"]
